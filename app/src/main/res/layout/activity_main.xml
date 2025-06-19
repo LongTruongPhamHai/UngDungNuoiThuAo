@@ -36,12 +36,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#F1B15A"
-            android:text="Chơi"
+            android:text="Bắt đầu"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:strokeColor="@color/black"
-            app:strokeWidth="2sp" />
+            app:strokeWidth="1dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

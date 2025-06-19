@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PetActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFD397"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:id="@+id/pet_info_ll"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@android:dimen/app_icon_size"
+                android:layout_weight="9"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/petname_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="Tên thú cưng"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="#000000"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/white_box_corner"
+                    android:gravity="center"
+                    android:padding="20dp">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/iq_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="6"
+                            android:paddingLeft="10dp"
+                            android:text="Chỉ số trí tuệ"
+                            android:textAlignment="textStart"
+                            android:textColor="#1976D2"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/iq_status_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="4"
+                            android:paddingRight="10dp"
+                            android:textAlignment="textEnd"
+                            android:textSize="14sp" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ProgressBar
+                                android:id="@+id/iq_score_bar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="0dp"
+                                android:layout_weight="1"
+                                android:max="100"
+                                android:progress="60"
+                                android:progressDrawable="@drawable/intelligence_score_bar" />
+
+                            <TextView
+                                android:id="@+id/iq_score_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:textAlignment="center"
+                                android:textColor="#ffffff"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/physical_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:text="Chỉ số thể chất"
+                            android:textAlignment="textStart"
+                            android:textColor="#388E3C"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/physical_status_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="6"
+                            android:paddingRight="10dp"
+                            android:textAlignment="textEnd"
+                            android:textSize="14sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ProgressBar
+                                android:id="@+id/physical_score_bar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="0dp"
+                                android:layout_weight="1"
+                                android:max="100"
+                                android:progress="60"
+                                android:progressDrawable="@drawable/physical_score_bar" />
+
+                            <TextView
+                                android:id="@+id/physical_score_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:textAlignment="center"
+                                android:textColor="#ffffff"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/spirit_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:text="Chỉ số tinh thần"
+                            android:textAlignment="textStart"
+                            android:textColor="#8E24AA"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/spirit_status_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="6"
+                            android:paddingRight="10dp"
+                            android:textAlignment="textEnd"
+                            android:textSize="14sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ProgressBar
+                                android:id="@+id/spirit_score_bar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="0dp"
+                                android:layout_weight="1"
+                                android:max="100"
+                                android:progress="60"
+                                android:progressDrawable="@drawable/spirit_score_bar" />
+
+                            <TextView
+                                android:id="@+id/spirit_score_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:textAlignment="center"
+                                android:textColor="#ffffff"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/overall_score_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:text="Chỉ số tổng"
+                            android:textAlignment="textStart"
+                            android:textColor="#ff0101"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/overall_status_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="6"
+                            android:paddingRight="10dp"
+                            android:textAlignment="textEnd"
+                            android:textSize="14sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ProgressBar
+                                android:id="@+id/overall_score_bar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="0dp"
+                                android:layout_weight="1"
+                                android:max="100"
+                                android:progress="60"
+                                android:progressDrawable="@drawable/overall_score_bar" />
+
+                            <TextView
+                                android:id="@+id/overall_score_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:textAlignment="center"
+                                android:textColor="#ffffff"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+
+                    </TableRow>
+
+                    <!--                <TableRow-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="0dp"-->
+                    <!--                    android:layout_marginBottom="5dp"-->
+                    <!--                    android:layout_weight="1"-->
+                    <!--                    android:gravity="center">-->
+
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/stamina_label"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_margin="0dp"-->
+                    <!--                        android:layout_weight="1"-->
+                    <!--                        android:paddingLeft="10dp"-->
+                    <!--                        android:text="Stamina"-->
+                    <!--                        android:textAlignment="textStart"-->
+                    <!--                        android:textColor="#ad8200"-->
+                    <!--                        android:textSize="20sp"-->
+                    <!--                        android:textStyle="bold" />-->
+
+                    <!--                </TableRow>-->
+
+                    <!--                <TableRow-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="0dp"-->
+                    <!--                    android:layout_marginBottom="10dp"-->
+                    <!--                    android:layout_weight="2">-->
+
+                    <!--                    <FrameLayout-->
+                    <!--                        android:id="@+id/stamina_layout"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="match_parent"-->
+                    <!--                        android:layout_weight="1">-->
+
+                    <!--                        <ProgressBar-->
+                    <!--                            android:id="@+id/stamina_bar"-->
+                    <!--                            style="?android:attr/progressBarStyleHorizontal"-->
+                    <!--                            android:layout_width="match_parent"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:layout_margin="0dp"-->
+                    <!--                            android:layout_weight="1"-->
+                    <!--                            android:max="4"-->
+                    <!--                            android:progress="1"-->
+                    <!--                            android:progressDrawable="@drawable/stamina_bar" />-->
+
+                    <!--                        <TextView-->
+                    <!--                            android:id="@+id/stamina"-->
+                    <!--                            android:layout_width="match_parent"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:gravity="center"-->
+                    <!--                            android:textAlignment="center"-->
+                    <!--                            android:textColor="#ffffff"-->
+                    <!--                            android:textSize="20sp"-->
+                    <!--                            android:textStyle="bold" />-->
+                    <!--                    </FrameLayout>-->
+
+                    <!--                </TableRow>-->
+
+                </TableLayout>
+
+                <Button
+                    android:id="@+id/edit_info_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="#f1b15a"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Sửa tên thú cưng"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/edit_info_ll"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="9"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="Đổi tên thú cưng"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="#000000"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Tên thú cưng"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:endIconMode="clear_text"
+                    app:hintEnabled="false">
+
+                    <EditText
+                        android:id="@+id/petname_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/white_box_corner"
+                        android:hint="Tên thú cưng mới"
+                        android:inputType="text"
+                        android:textColor="#000000"
+                        android:textColorHint="#737373"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    android:text="Nhập mật khẩu để sửa thông tin"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:endIconMode="password_toggle"
+                    app:hintEnabled="false">
+
+                    <EditText
+                        android:id="@+id/current_password_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/white_box_corner"
+                        android:ems="10"
+                        android:hint="Mật khẩu"
+                        android:inputType="textPassword"
+                        android:textColor="#000000"
+                        android:textColorHint="#737373"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/save_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="5"
+                        android:backgroundTint="#f1b15a"
+                        android:padding="10dp"
+                        android:text="Lưu"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:strokeColor="@color/black"
+                        app:strokeWidth="1dp" />
+
+                    <Button
+                        android:id="@+id/back_btn1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="5"
+                        android:backgroundTint="#f1b15a"
+                        android:padding="10dp"
+                        android:text="Quay lại"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:strokeColor="@color/black"
+                        app:strokeWidth="1dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/back_ll"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/back_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#f1b15a"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Quay lại"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="1dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/loading_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#7F181818"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/loading_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="#000000" />
+        </LinearLayout>
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -111,9 +111,9 @@
                     android:layout_height="0dp"
                     android:layout_weight="4"
                     android:orientation="horizontal"
-                    android:paddingStart="2sp"
-                    android:paddingTop="2sp"
-                    android:paddingEnd="2sp">
+                    android:paddingStart="1dp"
+                    android:paddingTop="1dp"
+                    android:paddingEnd="1dp">
 
                     <ImageView
                         android:id="@+id/imageView"
@@ -209,7 +209,7 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         app:strokeColor="@color/black"
-                        app:strokeWidth="2sp" />
+                        app:strokeWidth="1dp" />
 
                     <Button
                         android:id="@+id/sport_btn"
@@ -223,7 +223,7 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         app:strokeColor="@color/black"
-                        app:strokeWidth="2sp" />
+                        app:strokeWidth="1dp" />
 
                     <Button
                         android:id="@+id/game_btn"
@@ -237,7 +237,7 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         app:strokeColor="@color/black"
-                        app:strokeWidth="2sp" />
+                        app:strokeWidth="1dp" />
 
                     <Button
                         android:id="@+id/leaderboard_btn"
@@ -251,7 +251,7 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         app:strokeColor="@color/black"
-                        app:strokeWidth="2sp" />
+                        app:strokeWidth="1dp" />
 
                     <Button
                         android:id="@+id/summary_btn"
@@ -265,7 +265,7 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         app:strokeColor="@color/black"
-                        app:strokeWidth="2sp" />
+                        app:strokeWidth="1dp" />
 
                     <Button
                         android:id="@+id/setting_btn"
@@ -279,7 +279,7 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         app:strokeColor="@color/black"
-                        app:strokeWidth="2sp" />
+                        app:strokeWidth="1dp" />
                 </LinearLayout>
             </ScrollView>
 
