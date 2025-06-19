@@ -126,7 +126,7 @@
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             app:strokeColor="@color/black"
-                            app:strokeWidth="2sp" />
+                            app:strokeWidth="1dp" />
 
                         <Button
                             android:id="@+id/register_btn"
@@ -140,7 +140,7 @@
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             app:strokeColor="@color/black"
-                            app:strokeWidth="2sp" />
+                            app:strokeWidth="1dp" />
                     </LinearLayout>
 
                 </LinearLayout>
