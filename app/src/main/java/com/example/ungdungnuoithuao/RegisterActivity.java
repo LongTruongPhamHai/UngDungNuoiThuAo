@@ -150,7 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onError(Exception e) {
                                     loadingLl.setVisibility(View.GONE);
-                                    Toast.makeText(RegisterActivity.this, "Tạo thú cưng không thành công! Vui lòng thử lại trong giây lát!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterActivity.this, "Tạo thú cưng không thành công! Vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -158,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onError(Exception e) {
                             loadingLl.setVisibility(View.GONE);
-                            Toast.makeText(RegisterActivity.this, "Tạo tài khoản không thành công! Vui lòng thử lại trong giây lát!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Tạo tài khoản không thành công! Vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -166,15 +166,15 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void etOk(EditText edt) {
+    private void etOk(EditText edt) {
         edt.setBackground(ContextCompat.getDrawable(RegisterActivity.this, R.drawable.white_box_corner));
     }
 
-    public void etError(EditText edt) {
+    private void etError(EditText edt) {
         edt.setBackground(ContextCompat.getDrawable(RegisterActivity.this, R.drawable.white_warning_box_corner));
     }
 
-    public boolean isValidEmail(String email) {
+    private boolean isValidEmail(String email) {
         return !email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

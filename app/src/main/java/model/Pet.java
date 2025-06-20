@@ -44,32 +44,32 @@ public class Pet implements Serializable {
     }
 
     public String getIqStatus() {
-        if(iqscore < 50)    return "Poor";
-        else if(iqscore < 60)   return "Fair";
-        else if(iqscore < 85)   return "Good";
-        else return "Excellent";
+        if (iqscore < 50) return "Kém";
+        else if (iqscore < 60) return "Trung bình";
+        else if (iqscore < 85) return "Tốt";
+        else return "Xuất sắc";
     }
 
     public String getPhysicalStatus() {
-        if (physicalscore < 50) return "Poor";
-        else if (physicalscore < 60) return "Fair";
-        else if (physicalscore < 85) return "Good";
-        return "Excellent";
+        if (physicalscore < 50) return "Yếu";
+        else if (physicalscore < 60) return "Trung bình";
+        else if (physicalscore < 85) return "Khỏe";
+        return "Rất khỏe";
     }
 
     public String getSpiritStatus() {
-        if (spiritscore < 50) return "Tired";
-        else if (spiritscore < 60) return "Okay";
-        else if (spiritscore < 85) return "Content";
-        return "Relaxed";
+        if (spiritscore < 50) return "Mệt mỏi";
+        else if (spiritscore < 60) return "Ổn";
+        else if (spiritscore < 85) return "Vui vẻ";
+        return "Thư giãn";
     }
 
     public String getOverallStatus() {
         int overallscore = getOverallscore();
-        if (overallscore < 50) return "Sad";
-        else if (overallscore < 60) return "Neutral";
-        else if (overallscore < 85) return "Happy";
-        else return "Joyful";
+        if (overallscore < 50) return "Buồn";
+        else if (overallscore < 60) return "Bình thường";
+        else if (overallscore < 85) return "Hạnh phúc";
+        else return "Vui vẻ";
     }
 
     public int getIqscore() {

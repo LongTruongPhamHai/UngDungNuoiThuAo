@@ -46,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         Button studyBtn, sportBtn, gameBtn, leaderboardBtn, summaryBtn, settingBtn;
+        LinearLayout userInfoLl, petInfoLl;
 
         studyBtn = findViewById(R.id.study_btn);
         sportBtn = findViewById(R.id.sport_btn);
@@ -62,10 +63,30 @@ public class HomeActivity extends AppCompatActivity {
         levelBar = findViewById(R.id.level_bar);
         overallBar = findViewById(R.id.overall_bar);
 
+        userInfoLl = findViewById(R.id.user_info_ll);
+        petInfoLl = findViewById(R.id.pet_info_ll);
         loadingLl = findViewById(R.id.loading_ll);
 
         userRepository = new UserRepository();
         petRepository = new PetRepository();
+
+        userInfoLl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toUser = new Intent(HomeActivity.this, UserActivity.class);
+                toUser.putExtra("userId", userId);
+                startActivity(toUser);
+            }
+        });
+
+        petInfoLl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toPet = new Intent(HomeActivity.this, PetActivity.class);
+                toPet.putExtra("userId", userId);
+                startActivity(toPet);
+            }
+        });
 
         studyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,12 +106,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        gameBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        gameBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         leaderboardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
