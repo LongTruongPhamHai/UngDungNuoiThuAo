@@ -159,15 +159,15 @@ public class ForgotPwActivity extends AppCompatActivity {
         });
     }
 
-    public void etOk(EditText edt) {
+    private void etOk(EditText edt) {
         edt.setBackground(ContextCompat.getDrawable(ForgotPwActivity.this, R.drawable.white_box_corner));
     }
 
-    public void etError(EditText edt) {
+    private void etError(EditText edt) {
         edt.setBackground(ContextCompat.getDrawable(ForgotPwActivity.this, R.drawable.white_warning_box_corner));
     }
 
-    public boolean isValidEmail(String email) {
+    private boolean isValidEmail(String email) {
         return !email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

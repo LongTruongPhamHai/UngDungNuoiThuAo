@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Exception e) {
                             loadingLl.setVisibility(View.GONE);
-                            Toast.makeText(LoginActivity.this, "Đăng nhập không thành công! Vui lòng thử lại trong giây lát!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Đăng nhập không thành công! Vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -128,15 +128,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void etOk(EditText edt) {
+    private void etOk(EditText edt) {
         edt.setBackground(ContextCompat.getDrawable(LoginActivity.this, R.drawable.white_box_corner));
     }
 
-    public void etError(EditText edt) {
+    private void etError(EditText edt) {
         edt.setBackground(ContextCompat.getDrawable(LoginActivity.this, R.drawable.white_warning_box_corner));
     }
 
-    public void resetPwInput(EditText edt) {
+    private void resetPwInput(EditText edt) {
         edt.setText("");
     }
 }

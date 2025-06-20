@@ -118,18 +118,43 @@
                                     android:progress="50"
                                     android:progressDrawable="@drawable/level_bar" />
 
+                                <TextView
+                                    android:id="@+id/level_bar_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="50"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
                             </FrameLayout>
 
                         </LinearLayout>
 
                         <Button
-                            android:id="@+id/edit_info_btn"
+                            android:id="@+id/edit_email_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:backgroundTint="#f1b15a"
                             android:padding="10dp"
-                            android:text="Sửa thông tin cá nhân"
+                            android:text="Sửa email"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            app:strokeColor="@color/black"
+                            app:strokeWidth="1dp" />
+
+                        <Button
+                            android:id="@+id/edit_usname_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:backgroundTint="#f1b15a"
+                            android:padding="10dp"
+                            android:text="Sửa tên đăng nhập"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="14sp"
@@ -196,42 +221,12 @@
                             android:layout_height="match_parent"
                             android:layout_marginBottom="10dp"
                             android:gravity="center"
-                            android:text="Sửa thông tin"
+                            android:text="Sửa tên đăng nhập"
                             android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="#000000"
                             android:textSize="25sp"
                             android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:text="Email"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:endIconMode="clear_text"
-                            app:hintEnabled="false">
-
-                            <EditText
-                                android:id="@+id/email_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/white_box_corner"
-                                android:hint="Email mới"
-                                android:inputType="textEmailAddress"
-                                android:textColor="#000000"
-                                android:textColorHint="#737373"
-                                android:textSize="14sp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -305,12 +300,13 @@
                                 android:layout_height="match_parent"
                                 android:layout_margin="5dp"
                                 android:layout_weight="5"
-                                android:backgroundTint="#f1b15a"
+                                android:backgroundTint="#2196F3"
                                 android:padding="10dp"
                                 android:text="Lưu"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="14sp"
+                                android:textStyle="bold"
                                 app:strokeColor="@color/black"
                                 app:strokeWidth="1dp" />
 
@@ -460,12 +456,13 @@
                                 android:layout_height="match_parent"
                                 android:layout_margin="5dp"
                                 android:layout_weight="5"
-                                android:backgroundTint="#f1b15a"
+                                android:backgroundTint="#2196F3"
                                 android:padding="10dp"
                                 android:text="Lưu"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="14sp"
+                                android:textStyle="bold"
                                 app:strokeColor="@color/black"
                                 app:strokeWidth="1dp" />
 
@@ -706,6 +703,8 @@
             android:background="#7F181818"
             android:gravity="center"
             android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true"
             android:visibility="gone">
 
             <ProgressBar

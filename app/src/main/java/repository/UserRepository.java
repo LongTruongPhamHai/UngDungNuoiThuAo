@@ -187,37 +187,61 @@ public class UserRepository {
     }
 
     public void updateUser(String userId, User user, String iPassword, UpdateUserCallback callback) {
-        db.collection("user").document(userId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    Log.d("UserRepo", "Load user success");
-                    String storedPw = documentSnapshot.getString("password");
+        db.collection("user")
+                .whereEqualTo("username", user.getUsername())
+                .get()
+                .addOnSuccessListener(documentSnapshots -> {
+                    int usernameRes = 0;
+                    Log.d("UserRepo", "Found username duplicates: " + documentSnapshots.size());
+                    if (!documentSnapshots.isEmpty()) {
+                        for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                            if (!documentSnapshot.getId().equals(userId)) {
+                                usernameRes = 1;
+                                break;
+                            }
+                        }
+                    }
 
-                    if (BCrypt.checkpw(iPassword, storedPw)) {
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("email", user.getEmail());
-                        data.put("username", user.getUsername());
-                        data.put("password", user.getPassword());
-                        data.put("exp", user.getExp());
-                        data.put("level", user.getLevel());
+                    if (usernameRes == 1) {
+                        callback.onUsernameTaken();
+                    } else {
+                        db.collection("user").document(userId).get()
+                                .addOnSuccessListener(documentSnapshot -> {
+                                    Log.d("UserRepo", "Load user success");
+                                    String storedPw = documentSnapshot.getString("password");
 
-                        db.collection("user").document(userId).update(data)
-                                .addOnSuccessListener(v -> {
-                                    Log.d("UserRepo", "Update user success");
-                                    callback.onSuccess();
+                                    if (BCrypt.checkpw(iPassword, storedPw)) {
+                                        Map<String, Object> data = new HashMap<>();
+                                        data.put("email", user.getEmail());
+                                        data.put("username", user.getUsername());
+                                        data.put("password", user.getPassword());
+                                        data.put("exp", user.getExp());
+                                        data.put("level", user.getLevel());
+
+                                        db.collection("user").document(userId).update(data)
+                                                .addOnSuccessListener(v -> {
+                                                    Log.d("UserRepo", "Update user success");
+                                                    callback.onSuccess();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Log.d("UserRepo", "Update user failed! " + e.toString());
+                                                    callback.onFailure(e);
+                                                });
+
+                                    } else {
+                                        Log.d("UserRepo", "Update user failed! Incorrect password!");
+                                        callback.onIncorrectPw();
+                                    }
                                 })
                                 .addOnFailureListener(e -> {
-                                    Log.d("UserRepo", "Update user failed! " + e.toString());
+                                    Log.d("UserRepo", "Load user failed! " + e.toString());
                                     callback.onFailure(e);
                                 });
-
-                    } else {
-                        Log.d("UserRepo", "Update user failed! Incorrect password!");
-                        callback.onSuccess();
                     }
+
                 })
                 .addOnFailureListener(e -> {
-                    Log.d("UserRepo", "Load user failed! " + e.toString());
-                    callback.onFailure(e);
+                    Log.d("UserRepo", "!UsernameTaken");
                 });
     }
 
@@ -244,84 +268,6 @@ public class UserRepository {
                     callback.onFailure(e);
                 });
     }
-
-//    public void checkEmailUsername(String userId, String email, String username, EmailUsernameCheckCallback callback) {
-//        db.collection("user").whereEqualTo("email", email).get()
-//                .addOnSuccessListener(emailSnapshots -> {
-//                    boolean emailTaken = false;
-//
-//                    for (DocumentSnapshot doc : emailSnapshots) {
-//                        if (!doc.getId().equals(userId)) {
-//                            emailTaken = true;
-//                            break;
-//                        }
-//                    }
-//
-//                    db.collection("user").whereEqualTo("username", username).get()
-//                            .addOnSuccessListener(usernameSnapshots -> {
-//                                boolean usernameTaken = false;
-//
-//                                for (DocumentSnapshot doc : usernameSnapshots) {
-//                                    if (!doc.getId().equals(userId)) {
-//                                        usernameTaken = true;
-//                                        break;
-//                                    }
-//                                }
-//
-//                                boolean isTaken = emailTaken || usernameTaken;
-//                                callback.onResult(isTaken, emailTaken, usernameTaken);
-//                            })
-//                            .addOnFailureListener(e -> {
-//                                Log.d("UserRepo", "Error to load username! " + e.toString());
-//                            });
-//
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.d("UserRepo", "Error to load email! " + e.toString());
-//                });
-//    }
-
-//    public boolean checkEmail(String userId, String email, EmailUsernameCheckCallback callback) {
-//        boolean isTaken;
-//        db.collection("user").whereEqualTo("email", email).get()
-//                .addOnSuccessListener(emailSnapshots -> {
-//                    boolean emailTaken = false;
-//
-//                    for (DocumentSnapshot doc : emailSnapshots) {
-//                        if (!doc.getId().equals(userId)) {
-//                            emailTaken = true;
-//                            break;
-//                        }
-//                    }
-//                    isTaken = emailTaken;
-//                    callback.onResult(isTaken);
-//
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.d("UserRepo", "Error to load email! " + e.toString());
-//                });
-//        return isTaken;
-//    }
-//
-//    public void checkUsername(String userId, String username, EmailUsernameCheckCallback callback) {
-//        db.collection("user").whereEqualTo("username", username).get()
-//                .addOnSuccessListener(usernameSnapshots -> {
-//                    boolean usernameTaken = false;
-//
-//                    for (DocumentSnapshot doc : usernameSnapshots) {
-//                        if (!doc.getId().equals(userId)) {
-//                            usernameTaken = true;
-//                            break;
-//                        }
-//                    }
-//
-//                    boolean isTaken = usernameTaken;
-//                    callback.onResult(isTaken);
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.d("UserRepo", "Error to load username! " + e.toString());
-//                });
-//    }
 
     public void resetAccount(String userId, String password, UpdateUserCallback callback) {
         db.collection("user").document(userId).get()
@@ -402,16 +348,19 @@ public class UserRepository {
                                         @Override
                                         public void onSuccess() {
                                             Log.d("UserRepo", "Delete pet success");
+                                            callback.onSuccess();
                                         }
 
                                         @Override
                                         public void onFailure(Exception e) {
                                             Log.d("UserRepo", "Delete pet failed! " + e.toString());
+                                            callback.onFailure(e);
                                         }
 
                                         @Override
                                         public void onIncorrectPassword() {
                                             Log.d("UserRepo", "Delete pet failed! Incorrect password!");
+                                            callback.onIncorrectPw();
 
                                         }
                                     });

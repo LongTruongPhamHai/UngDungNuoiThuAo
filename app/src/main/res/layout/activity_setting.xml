@@ -45,7 +45,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/walk_btn"
+                    android:id="@+id/user_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -59,13 +59,27 @@
                     app:strokeWidth="1dp" />
 
                 <Button
-                    android:id="@+id/run_btn"
+                    android:id="@+id/pet_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:backgroundTint="#f1b15a"
                     android:padding="5dp"
                     android:text="Thú cưng"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="1dp" />
+
+                <Button
+                    android:id="@+id/about_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="#f1b15a"
+                    android:padding="5dp"
+                    android:text="Thông tin ứng dụng"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16sp"

@@ -36,6 +36,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/user_info_ll"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -124,7 +125,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/pet_info"
+                    android:id="@+id/pet_info_ll"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -292,6 +293,8 @@
             android:background="#7F181818"
             android:gravity="center"
             android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true"
             android:visibility="gone">
 
             <ProgressBar
