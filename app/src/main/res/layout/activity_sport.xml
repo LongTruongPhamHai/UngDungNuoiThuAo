@@ -385,6 +385,22 @@
                             android:visibility="gone"
                             app:strokeColor="@color/black"
                             app:strokeWidth="1dp" />
+
+                        <Button
+                            android:id="@+id/back2_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:backgroundTint="#f1b15a"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Quay lại"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:visibility="gone"
+                            app:strokeColor="@color/black"
+                            app:strokeWidth="1dp" />
                     </LinearLayout>
 
                     <Button

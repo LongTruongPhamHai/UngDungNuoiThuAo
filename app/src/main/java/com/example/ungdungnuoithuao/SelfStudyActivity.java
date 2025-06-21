@@ -35,17 +35,29 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import model.Pet;
+import model.SportLog;
+import model.StudyLog;
+import model.User;
 import repository.PetRepository;
 import repository.SportLogRepository;
+import repository.StudyLogRepository;
 import repository.UserRepository;
+import repository.callback.pet.PetLoadedCallback;
+import repository.callback.pet.UpdatePetCallback;
+import repository.callback.sportlog.GetSpLogCallback;
+import repository.callback.studylog.AddStLogCallback;
+import repository.callback.studylog.GetStLogCallback;
+import repository.callback.user.UpdateUserCallback;
+import repository.callback.user.UserLoadedCallback;
 
 public class SelfStudyActivity extends AppCompatActivity {
-    private String userId, type;
+    private String userId, type = "Tự học";
     private TextView timerTv;
     private boolean timerStarted = true;
     private Timer timer;
     private TimerTask timerTask;
-    private int time = 0, score;
+    private int time = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +97,7 @@ public class SelfStudyActivity extends AppCompatActivity {
 
         UserRepository userRepository = new UserRepository();
         PetRepository petRepository = new PetRepository();
+        StudyLogRepository studyLogRepository = new StudyLogRepository();
 
         timer = new Timer();
 
@@ -139,12 +152,96 @@ public class SelfStudyActivity extends AppCompatActivity {
                 String addTime = timeFormat.format(new Date());
 
                 String duration = getTimerText();
-                int durationValue = time;
+                int durationValue = time, score = 0;
 
                 messageTv.setText("Mỗi phút học là một bước tiến gần hơn đến ước mơ! Bạn đang đi đúng hướng!");
 
-                timeTv.setText(addDate + "\n" + addTime);
-                timerRsTv.setText(duration);
+                userRepository.getUser(userId, new UserLoadedCallback() {
+                    @Override
+                    public void onUserLoaded(User nUser) {
+                        userRepository.trainingUser(nUser, type, score);
+                        userRepository.updateUserStat(userId, nUser, new UpdateUserCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("SelfStudyAct", "Update user stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("SelfStudyAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPw() {
+                                Log.d("SelfStudyAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onUsernameTaken() {
+                                Log.d("SelfStudyAct", "Update user stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("SelfStudyAct", "Load user failed!");
+                    }
+                });
+
+                petRepository.getPet(userId, new PetLoadedCallback() {
+                    @Override
+                    public void onPetLoaded(Pet nPet) {
+                        petRepository.trainingPet(nPet, type, score);
+                        petRepository.updatePetStat(userId, nPet, new UpdatePetCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("SelfStudyAct", "Update pet stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("SelfStudyAct", "Update pet stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPassword() {
+                                Log.d("SelfStudyAct", "Update pet stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception errorMessage) {
+                        Log.d("SelfStudyAct", "Load pet failed!");
+                    }
+                });
+
+                studyLogRepository.addStLog(userId, addDate, addTime, type, durationValue, score, new AddStLogCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("SelfStudyAct", "Add sp log success!");
+                        studyLogRepository.getStLog(userId, addDate, addTime, new GetStLogCallback() {
+                            @Override
+                            public void onSuccess(StudyLog stLog) {
+                                Log.d("SelfStudyAct", "Get st log success");
+                                timeTv.setText(stLog.getTime() + "\n" + stLog.getDate());
+                                timerRsTv.setText(duration);
+                                loadingLl.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                loadingLl.setVisibility(View.GONE);
+                                Log.d("SelfStudyAct", "Get sp log failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                    }
+                });
             }
         });
 
@@ -154,20 +251,6 @@ public class SelfStudyActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1001) {
-            if (grantResults.length > 0 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Đã cấp quyền truy cập!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Quyền truy cập bị từ chối!", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     private void startTimer() {

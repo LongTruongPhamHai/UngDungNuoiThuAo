@@ -6,8 +6,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +30,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,12 +66,21 @@ import repository.callback.user.UserLoadedCallback;
 public class SportActivity extends AppCompatActivity implements SensorEventListener {
     private String userId, type;
     private TextView timerTv, distanceTv, stepTv;
+
     private boolean timerStarted = true;
     private Timer timer;
     private TimerTask timerTask;
+
     private SensorManager sensorManager;
     private Sensor stepSensor;
     private boolean isSensorPresent = false, isCounting = false;
+
+    private boolean isTracking = false, isPaused = false;
+    private float totalDistance = 0f;
+    private Location lastLocation = null;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationCallback locationCallback;
+
     private int time = 0, distance = 0, step = 0, score, displayedSteps = 0, initialStep = -1;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -86,7 +104,7 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                 buttonLl, loadingLl;
         ScrollView actEndLl;
         TextView headerTv, messageTv, timeTv, timerRsTv, distanceRsTv, stepRsTv;
-        Button startBtn, resumeBtn, pauseBtn, endBtn, backBtn;
+        Button startBtn, resumeBtn, pauseBtn, endBtn, backBtn, back2Btn;
         Spinner typeSp;
 
         selectLl = findViewById(R.id.select_ll);
@@ -115,6 +133,7 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
         pauseBtn = findViewById(R.id.pause_btn);
         endBtn = findViewById(R.id.end_btn);
         backBtn = findViewById(R.id.back_btn);
+        back2Btn = findViewById(R.id.back2_btn);
 
         typeSp = findViewById(R.id.type_sp);
 
@@ -139,6 +158,8 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
         PetRepository petRepository = new PetRepository();
         SportLogRepository sportLogRepository = new SportLogRepository();
 
+        timer = new Timer();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACTIVITY_RECOGNITION)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -156,8 +177,23 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
             Toast.makeText(this, "Cảm biến không khả dụng! Vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
         }
 
-        timer = new Timer();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (isTracking && !isPaused) {
+                    for (Location location : locationResult.getLocations()) {
+                        if (lastLocation != null) {
+                            float trackDistance = lastLocation.distanceTo(location);
+                            totalDistance += trackDistance;
+                            distanceTv.setText(String.valueOf(Math.round(totalDistance)) + " m");
+                        }
+                        lastLocation = location;
+                    }
+                }
+            }
+        };
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +227,13 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                     timerStarted = true;
                     startTimer();
                     startCountStep();
+                    if (!isTracking) {
+                        isTracking = true;
+                        isPaused = false;
+                        totalDistance = 0f;
+                        lastLocation = null;
+                        startLocationUpdates();
+                    }
                 }
             }
         });
@@ -204,6 +247,9 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                 timerStarted = true;
                 startTimer();
                 startCountStep();
+                if (isTracking && isPaused) {
+                    isPaused = false;
+                }
             }
         });
 
@@ -219,6 +265,9 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                     sensorManager.unregisterListener(SportActivity.this);
                     isCounting = false;
                 }
+                if (isTracking) {
+                    isPaused = true;
+                }
             }
         });
 
@@ -227,9 +276,16 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
             public void onClick(View v) {
                 actOnLl.setVisibility(View.GONE);
                 actEndLl.setVisibility(View.VISIBLE);
-                backBtn.setVisibility(View.VISIBLE);
                 resumeBtn.setVisibility(View.GONE);
                 endBtn.setVisibility(View.GONE);
+                back2Btn.setVisibility(View.VISIBLE);
+
+                if (isTracking) {
+                    isTracking = false;
+                    isPaused = false;
+                    stopLocationUpdates();
+                    lastLocation = null;
+                }
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String addDate = dateFormat.format(new Date());
@@ -239,31 +295,134 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
 
                 String duration = getTimerText();
                 int durationValue = time;
+                distance = Math.round(totalDistance);
+                step = displayedSteps;
 
                 switch (type) {
                     case "Chạy bộ":
+                        score = step;
                         messageTv.setText("Bạn đã bứt phá giới hạn!\nHãy giữ vững phong độ nhé!");
                         distanceRsLl.setVisibility(View.VISIBLE);
                         stepRsLl.setVisibility(View.VISIBLE);
                         break;
 
                     case "Đạp xe":
+                        score = distance;
+                        step = 0;
                         messageTv.setText("Đạp hết ga – khỏe hết mình!\nTuyệt vời lắm!");
                         distanceRsLl.setVisibility(View.VISIBLE);
                         stepRsLl.setVisibility(View.GONE);
                         break;
 
                     case "Yoga":
+                        score = durationValue;
+                        distance = 0;
+                        step = 0;
                         messageTv.setText(" Bình yên đến từ bên trong!\nBạn đã làm rất tốt!");
                         distanceRsLl.setVisibility(View.GONE);
                         stepRsLl.setVisibility(View.GONE);
                         break;
                 }
 
-                timeTv.setText(addDate + "\n" + addTime);
-                timerRsTv.setText(duration);
-                distanceRsTv.setText(String.valueOf(distance) + " m");
-                stepRsTv.setText(String.valueOf(step));
+                userRepository.getUser(userId, new UserLoadedCallback() {
+                    @Override
+                    public void onUserLoaded(User nUser) {
+                        userRepository.trainingUser(nUser, type, score);
+                        userRepository.updateUserStat(userId, nUser, new UpdateUserCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("SportAct", "Update user stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("SportAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPw() {
+                                Log.d("SportAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onUsernameTaken() {
+                                Log.d("SportAct", "Update user stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("SportAct", "Load user failed!");
+                    }
+                });
+
+                petRepository.getPet(userId, new PetLoadedCallback() {
+                    @Override
+                    public void onPetLoaded(Pet nPet) {
+                        petRepository.trainingPet(nPet, type, score);
+                        petRepository.updatePetStat(userId, nPet, new UpdatePetCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("SportAct", "Update pet stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("SportAct", "Update pet stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPassword() {
+                                Log.d("SportAct", "Update pet stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception errorMessage) {
+                        Log.d("SportAct", "Load pet failed!");
+                    }
+                });
+
+                sportLogRepository.addSpLog(userId, addDate, addTime, type, durationValue, distance, step, new AddSpLogCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("SportAct", "Add sp log success!");
+                        sportLogRepository.getSpLog(userId, addDate, addTime, new GetSpLogCallback() {
+                            @Override
+                            public void onSuccess(SportLog spLog) {
+                                Log.d("SportAct", "Get sp log success");
+                                timeTv.setText(spLog.getTime() + "\n" + spLog.getDate());
+                                timerRsTv.setText(duration);
+                                distanceRsTv.setText(String.valueOf(spLog.getDistance()) + " m");
+                                stepRsTv.setText(String.valueOf(spLog.getStep()));
+                                loadingLl.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                loadingLl.setVisibility(View.GONE);
+                                Log.d("SportAct", "Get sp log failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("SportAct", "Add sp log failed! " + e.toString());
+                    }
+                });
+            }
+        });
+
+        back2Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                back2Btn.setVisibility(View.GONE);
+                startLl.setVisibility(View.GONE);
+                selectLl.setVisibility(View.VISIBLE);
+                backBtn.setVisibility(View.VISIBLE);
             }
         });
 
@@ -294,14 +453,10 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
 
         displayedSteps = totalSteps - initialStep;
         stepTv.setText(String.valueOf(displayedSteps));
-
-//        distance = (int) Math.round(displayedSteps * stepLenght);
-//        distanceTv.setText(String.valueOf(distance) + " m");
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Not used
     }
 
     @Override
@@ -349,10 +504,34 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
     }
 
     private void startCountStep() {
-        if(!isCounting && isSensorPresent) {
+        if (!isCounting && isSensorPresent) {
             sensorManager.registerListener(SportActivity.this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
             isCounting = true;
             Toast.makeText(SportActivity.this, "Bắt đầu hoạt động!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1001);
+            return;
+        }
+
+        LocationRequest locationRequest = new LocationRequest.Builder(
+                Priority.PRIORITY_HIGH_ACCURACY, 5000L) // 5s
+                .setMinUpdateIntervalMillis(2000L)
+                .build();
+
+        fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+        );
+    }
+
+    private void stopLocationUpdates() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 }

@@ -7,10 +7,10 @@ public class User {
     private String email, username, password;
     private int exp = 0, level = 1;
 
-    public User(){}
+    public User() {
+    }
 
-    public User(String email, String username, String password)
-    {
+    public User(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
@@ -73,41 +73,35 @@ public class User {
         }
     }
 
-    public void userStudyEnglish()
-    {
+    public void userStudyEnglish() {
         this.exp += 10;
+        gainLevel();
     }
 
     public void userTest(int score) {
         if (score >= 7) this.exp += score;
         else this.exp += 2;
-    }
-
-    public void userPracticeTime(int duration) {
-        this.exp += (int) Math.round((float) duration / 60);
         gainLevel();
     }
 
-    public void userWalk(int step) {
+    public void userRun(int step) {
         this.exp += (int) Math.round((float) step / 10);
         gainLevel();
     }
 
-    public void userRun(int distance) {
-        this.exp += distance * 5;
-        gainLevel();
-    }
-
     public void userBicycle(int distance) {
-        this.exp += distance * 2;
+        this.exp += (distance / 10) * 2;
         gainLevel();
     }
 
-    public void userPlayGame(String result) {
-        if (result.equals("win")) {
-            this.exp += 10;
-        } else {
-            this.exp += 0;
-        }
+    public void userTimePractice(int duration) {
+        this.exp += (int) Math.round((float) duration / 60);
+        gainLevel();
+    }
+
+    public void userPlayGame(int score) {
+        // Win = 10; Loss = 0;
+        this.exp += score;
+        gainLevel();
     }
 }

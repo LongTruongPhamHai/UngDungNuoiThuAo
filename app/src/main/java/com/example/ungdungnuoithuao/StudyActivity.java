@@ -2,14 +2,36 @@ package com.example.ungdungnuoithuao;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import model.Pet;
+import model.SportLog;
+import model.StudyLog;
+import model.User;
+import repository.PetRepository;
+import repository.StudyLogRepository;
+import repository.UserRepository;
+import repository.callback.pet.PetLoadedCallback;
+import repository.callback.pet.UpdatePetCallback;
+import repository.callback.sportlog.AddSpLogCallback;
+import repository.callback.sportlog.GetSpLogCallback;
+import repository.callback.studylog.AddStLogCallback;
+import repository.callback.studylog.GetStLogCallback;
+import repository.callback.user.UpdateUserCallback;
+import repository.callback.user.UserLoadedCallback;
 
 public class StudyActivity extends AppCompatActivity {
 
@@ -34,6 +56,194 @@ public class StudyActivity extends AppCompatActivity {
         testBtn = findViewById(R.id.test_btn);
         freeBtn = findViewById(R.id.free_btn);
         backBtn = findViewById(R.id.back_btn);
+
+        englishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent tới Acitivity học tiếng Anh
+
+                // Test tăng chỉ số (Để tạm)
+                UserRepository userRepository = new UserRepository();
+                PetRepository petRepository = new PetRepository();
+                StudyLogRepository studyLogRepository = new StudyLogRepository();
+
+                String type = "Tiếng Anh";
+                int score = 0, duration = 0;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                String addDate = dateFormat.format(new Date());
+
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                String addTime = timeFormat.format(new Date());
+
+                userRepository.getUser(userId, new UserLoadedCallback() {
+                    @Override
+                    public void onUserLoaded(User nUser) {
+                        userRepository.trainingUser(nUser, type, score);
+                        userRepository.updateUserStat(userId, nUser, new UpdateUserCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("StudyAct", "Update user stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("StudyAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPw() {
+                                Log.d("StudyAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onUsernameTaken() {
+                                Log.d("StudyAct", "Update user stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("StudyAct", "Load user failed!");
+                    }
+                });
+
+                petRepository.getPet(userId, new PetLoadedCallback() {
+                    @Override
+                    public void onPetLoaded(Pet nPet) {
+                        petRepository.trainingPet(nPet, type, score);
+                        petRepository.updatePetStat(userId, nPet, new UpdatePetCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("StudyAct", "Update pet stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("StudyAct", "Update pet stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPassword() {
+                                Log.d("StudyAct", "Update pet stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception errorMessage) {
+                        Log.d("StudyAct", "Load pet failed!");
+                    }
+                });
+
+                studyLogRepository.addStLog(userId, addDate, addTime, type, duration, score, new AddStLogCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("StudyAct", "Add sp log success!");
+                        Toast.makeText(StudyActivity.this, "Thêm dữ liệu thành công!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(StudyActivity.this, "Thêm dữ liệu thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent tới Acitivity kiểm tra
+
+                // Test tăng chỉ số (Để tạm)
+                UserRepository userRepository = new UserRepository();
+                PetRepository petRepository = new PetRepository();
+                StudyLogRepository studyLogRepository = new StudyLogRepository();
+
+                String type = "Kiểm tra";
+                int score = (int) (Math.random() * 11), duration = 0;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                String addDate = dateFormat.format(new Date());
+
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                String addTime = timeFormat.format(new Date());
+
+                userRepository.getUser(userId, new UserLoadedCallback() {
+                    @Override
+                    public void onUserLoaded(User nUser) {
+                        userRepository.trainingUser(nUser, type, score);
+                        userRepository.updateUserStat(userId, nUser, new UpdateUserCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("StudyAct", "Update user stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("StudyAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPw() {
+                                Log.d("StudyAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onUsernameTaken() {
+                                Log.d("StudyAct", "Update user stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("StudyAct", "Load user failed!");
+                    }
+                });
+
+                petRepository.getPet(userId, new PetLoadedCallback() {
+                    @Override
+                    public void onPetLoaded(Pet nPet) {
+                        petRepository.trainingPet(nPet, type, score);
+                        petRepository.updatePetStat(userId, nPet, new UpdatePetCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("StudyAct", "Update pet stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("StudyAct", "Update pet stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPassword() {
+                                Log.d("StudyAct", "Update pet stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception errorMessage) {
+                        Log.d("StudyAct", "Load pet failed!");
+                    }
+                });
+
+                studyLogRepository.addStLog(userId, addDate, addTime, type, duration, score, new AddStLogCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("StudyAct", "Add sp log success!");
+                        Toast.makeText(StudyActivity.this, "Thêm dữ liệu thành công!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(StudyActivity.this, "Thêm dữ liệu thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
         freeBtn.setOnClickListener(new View.OnClickListener() {
             @Override

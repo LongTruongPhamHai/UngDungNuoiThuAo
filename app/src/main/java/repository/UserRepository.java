@@ -16,6 +16,7 @@ import java.util.Map;
 import model.User;
 import repository.callback.pet.UpdatePetCallback;
 import repository.callback.sportlog.DeleteSpLogCallback;
+import repository.callback.studylog.DeleteStLogCallback;
 import repository.callback.user.CheckUserInfoCallback;
 import repository.callback.user.ForgotPwCallback;
 import repository.callback.user.LoadTopUserCallback;
@@ -27,7 +28,9 @@ import repository.callback.user.UserLoadedCallback;
 public class UserRepository {
     private FirebaseFirestore db;
     private PetRepository petRepository;
+    private StudyLogRepository studyLogRepository;
     private SportLogRepository sportLogRepository;
+
 
     public UserRepository() {
         db = FirebaseFirestore.getInstance();
@@ -288,6 +291,7 @@ public class UserRepository {
                                 });
 
                         petRepository = new PetRepository();
+                        studyLogRepository = new StudyLogRepository();
                         sportLogRepository = new SportLogRepository();
 
                         petRepository.resetPet(userId, new UpdatePetCallback() {
@@ -305,6 +309,18 @@ public class UserRepository {
                             public void onIncorrectPassword() {
                                 Log.d("UserRepo", "Reset pet failed! Incorrect password!");
 
+                            }
+                        });
+
+                        studyLogRepository.deleteStLog(userId, new DeleteStLogCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("UserRepo", "Delete study log success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("UserRepo", "Delete study log failed! " + e.toString());
                             }
                         });
 
@@ -343,6 +359,8 @@ public class UserRepository {
                                     Log.d("UserRepo", "Delete user success");
 
                                     petRepository = new PetRepository();
+                                    studyLogRepository = new StudyLogRepository();
+                                    sportLogRepository = new SportLogRepository();
 
                                     petRepository.deletePet(userId, new UpdatePetCallback() {
                                         @Override
@@ -364,6 +382,31 @@ public class UserRepository {
 
                                         }
                                     });
+
+                                    studyLogRepository.deleteStLog(userId, new DeleteStLogCallback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.d("UserRepo", "Delete study log success!");
+                                        }
+
+                                        @Override
+                                        public void onFailure(Exception e) {
+                                            Log.d("UserRepo", "Delete study log failed! " + e.toString());
+                                        }
+                                    });
+
+                                    sportLogRepository.deleteSpLog(userId, new DeleteSpLogCallback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.d("UserRepo", "Delete sport log success!");
+                                        }
+
+                                        @Override
+                                        public void onFailure(Exception e) {
+                                            Log.d("UserRepo", "Delete sport log failed! " + e.toString());
+                                        }
+                                    });
+
                                 })
                                 .addOnFailureListener(e -> {
                                     Log.d("UserRepo", "Delete user failed! " + e.toString());
@@ -382,25 +425,35 @@ public class UserRepository {
 
     public void trainingUser(User nUser, String type, int score) {
         switch (type) {
-            case "yoga":
-            case "bodyweight":
-            case "aerobic":
-                nUser.userPracticeTime(score);
+
+            case "Tiếng Anh":
+                nUser.userStudyEnglish();
                 Log.d("UserRepo", "Training success!");
                 break;
 
-            case "walk":
-                nUser.userWalk(score);
+            case "Kiểm tra":
+                nUser.userTest(score);
                 Log.d("UserRepo", "Training success!");
                 break;
 
-            case "run":
+            case "Tự học":
+            case "Yoga":
+                nUser.userTimePractice(score);
+                Log.d("UserRepo", "Training success!");
+                break;
+
+            case "Chạy bộ":
                 nUser.userRun(score);
                 Log.d("UserRepo", "Training success!");
                 break;
 
-            case "cycle":
+            case "Đạp xe":
                 nUser.userBicycle(score);
+                Log.d("UserRepo", "Training success!");
+                break;
+
+            case "Giải trí":
+                nUser.userPlayGame(score);
                 Log.d("UserRepo", "Training success!");
                 break;
 
