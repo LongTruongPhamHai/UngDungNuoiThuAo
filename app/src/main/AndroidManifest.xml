@@ -2,9 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.SENDTO" />
+
             <data android:scheme="mailto" />
         </intent>
     </queries>
@@ -19,6 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UngDungNuoiThuAo"
         tools:targetApi="31">
+        <activity
+            android:name=".GuideActivity"
+            android:exported="false" />
         <activity
             android:name=".SelfStudyActivity"
             android:exported="false" />

@@ -154,7 +154,7 @@ public class UserRepository {
                     int index = 0;
                     for (DocumentSnapshot doc : documentSnapshots) {
                         User user = doc.toObject(User.class);
-                        if (index < 3) {
+                        if (index < 5) {
                             topUser.add(user);
                         }
                         index++;

@@ -45,12 +45,13 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        Button studyBtn, sportBtn, gameBtn, leaderboardBtn, summaryBtn, settingBtn;
+        Button studyBtn, sportBtn, gameBtn, guideBtn, leaderboardBtn, summaryBtn, settingBtn;
         LinearLayout userInfoLl, petInfoLl;
 
         studyBtn = findViewById(R.id.study_btn);
         sportBtn = findViewById(R.id.sport_btn);
         gameBtn = findViewById(R.id.game_btn);
+        guideBtn = findViewById(R.id.guide_btn);
         leaderboardBtn = findViewById(R.id.leaderboard_btn);
         summaryBtn = findViewById(R.id.summary_btn);
         settingBtn = findViewById(R.id.setting_btn);
@@ -112,6 +113,14 @@ public class HomeActivity extends AppCompatActivity {
 //
 //            }
 //        });
+
+        guideBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toGuide = new Intent(HomeActivity.this, GuideActivity.class);
+                startActivity(toGuide);
+            }
+        });
 
         leaderboardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
