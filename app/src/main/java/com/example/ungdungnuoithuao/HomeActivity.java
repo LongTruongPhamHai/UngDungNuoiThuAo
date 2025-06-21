@@ -2,6 +2,7 @@ package com.example.ungdungnuoithuao;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,11 +17,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import model.Pet;
 import model.User;
+import repository.ActivityLogRepository;
 import repository.PetRepository;
 import repository.UserRepository;
+import repository.callback.activitylog.AddActLogCallback;
+import repository.callback.activitylog.GetLastActLogDateTimeCallback;
 import repository.callback.pet.PetLoadedCallback;
+import repository.callback.pet.UpdatePetCallback;
+import repository.callback.user.UpdateUserCallback;
 import repository.callback.user.UserLoadedCallback;
 
 public class HomeActivity extends AppCompatActivity {
@@ -30,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     String userId;
     private UserRepository userRepository;
     private PetRepository petRepository;
+    private ActivityLogRepository activityLogRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +81,9 @@ public class HomeActivity extends AppCompatActivity {
 
         userRepository = new UserRepository();
         petRepository = new PetRepository();
+        activityLogRepository = new ActivityLogRepository();
+
+        petRepository.checkOfflineTime(userId);
 
         userInfoLl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,12 +121,99 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-//        gameBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        gameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent đến gameActivity
+
+                // Test tăng chỉ số (Tạm thời)
+                String type = "Giải trí";
+                int score = Math.random() < 0.5 ? 0 : 10, duration = 0, distance = 0, step = 0;;
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                String addDate = dateFormat.format(new Date());
+
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                String addTime = timeFormat.format(new Date());
+
+                SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                String datetime = fullFormat.format(new Date());
+
+                userRepository.getUser(userId, new UserLoadedCallback() {
+                    @Override
+                    public void onUserLoaded(User nUser) {
+                        userRepository.trainingUser(nUser, type, score);
+                        userRepository.updateUserStat(userId, nUser, new UpdateUserCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("HomeAct", "Update user stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("HomeAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPw() {
+                                Log.d("HomeAct", "Update user stat failed!");
+                            }
+
+                            @Override
+                            public void onUsernameTaken() {
+                                Log.d("HomeAct", "Update user stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("HomeAct", "Get user stat failed!");
+                    }
+                });
+
+                petRepository.getPet(userId, new PetLoadedCallback() {
+                    @Override
+                    public void onPetLoaded(Pet nPet) {
+                        petRepository.trainingPet(nPet, type, score);
+                        petRepository.updatePetStat(userId, nPet, new UpdatePetCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("StudyAct", "Update pet stat success!");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("StudyAct", "Update pet stat failed!");
+                            }
+
+                            @Override
+                            public void onIncorrectPassword() {
+                                Log.d("StudyAct", "Update pet stat failed!");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception errorMessage) {
+                        Log.d("StudyAct", "Load pet failed!");
+                    }
+                });
+
+                activityLogRepository.addActlog(userId, datetime, addDate, addTime, type, duration, distance, step, score, new AddActLogCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("HomeAct", "Add act log success!");
+                        Toast.makeText(HomeActivity.this, "Thêm dữ liệu thành công!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(HomeActivity.this, "Thêm dữ liệu thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
         guideBtn.setOnClickListener(new View.OnClickListener() {
             @Override

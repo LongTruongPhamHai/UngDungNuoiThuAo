@@ -6,17 +6,21 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import org.checkerframework.checker.units.qual.A;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import model.User;
+import repository.callback.activitylog.DeleteActLogCallback;
+import repository.callback.activitylog.GetLastActLogDateTimeCallback;
 import repository.callback.pet.UpdatePetCallback;
-import repository.callback.sportlog.DeleteSpLogCallback;
-import repository.callback.studylog.DeleteStLogCallback;
 import repository.callback.user.CheckUserInfoCallback;
 import repository.callback.user.ForgotPwCallback;
 import repository.callback.user.LoadTopUserCallback;
@@ -28,8 +32,7 @@ import repository.callback.user.UserLoadedCallback;
 public class UserRepository {
     private FirebaseFirestore db;
     private PetRepository petRepository;
-    private StudyLogRepository studyLogRepository;
-    private SportLogRepository sportLogRepository;
+    private ActivityLogRepository activityLogRepository;
 
 
     public UserRepository() {
@@ -291,8 +294,7 @@ public class UserRepository {
                                 });
 
                         petRepository = new PetRepository();
-                        studyLogRepository = new StudyLogRepository();
-                        sportLogRepository = new SportLogRepository();
+                        activityLogRepository = new ActivityLogRepository();
 
                         petRepository.resetPet(userId, new UpdatePetCallback() {
                             @Override
@@ -312,29 +314,18 @@ public class UserRepository {
                             }
                         });
 
-                        studyLogRepository.deleteStLog(userId, new DeleteStLogCallback() {
+                        activityLogRepository.deleteActlog(userId, new DeleteActLogCallback() {
                             @Override
                             public void onSuccess() {
-                                Log.d("UserRepo", "Delete study log success!");
+                                Log.d("UserRepo", "Delete actLog success!");
                             }
 
                             @Override
                             public void onFailure(Exception e) {
-                                Log.d("UserRepo", "Delete study log failed! " + e.toString());
+                                Log.d("UserRepo", "Delete actLog failed! " + e.toString());
                             }
                         });
 
-                        sportLogRepository.deleteSpLog(userId, new DeleteSpLogCallback() {
-                            @Override
-                            public void onSuccess() {
-                                Log.d("UserRepo", "Delete sport log success!");
-                            }
-
-                            @Override
-                            public void onFailure(Exception e) {
-                                Log.d("UserRepo", "Delete sport log failed! " + e.toString());
-                            }
-                        });
 
                     } else {
                         Log.d("UserRepo", "Reset user failed! Incorrect password!");
@@ -359,8 +350,7 @@ public class UserRepository {
                                     Log.d("UserRepo", "Delete user success");
 
                                     petRepository = new PetRepository();
-                                    studyLogRepository = new StudyLogRepository();
-                                    sportLogRepository = new SportLogRepository();
+                                    activityLogRepository = new ActivityLogRepository();
 
                                     petRepository.deletePet(userId, new UpdatePetCallback() {
                                         @Override
@@ -383,30 +373,17 @@ public class UserRepository {
                                         }
                                     });
 
-                                    studyLogRepository.deleteStLog(userId, new DeleteStLogCallback() {
+                                    activityLogRepository.deleteActlog(userId, new DeleteActLogCallback() {
                                         @Override
                                         public void onSuccess() {
-                                            Log.d("UserRepo", "Delete study log success!");
+                                            Log.d("UserRepo", "Delete actLog success!");
                                         }
 
                                         @Override
                                         public void onFailure(Exception e) {
-                                            Log.d("UserRepo", "Delete study log failed! " + e.toString());
+                                            Log.d("UserRepo", "Delete actLog failed! " + e.toString());
                                         }
                                     });
-
-                                    sportLogRepository.deleteSpLog(userId, new DeleteSpLogCallback() {
-                                        @Override
-                                        public void onSuccess() {
-                                            Log.d("UserRepo", "Delete sport log success!");
-                                        }
-
-                                        @Override
-                                        public void onFailure(Exception e) {
-                                            Log.d("UserRepo", "Delete sport log failed! " + e.toString());
-                                        }
-                                    });
-
                                 })
                                 .addOnFailureListener(e -> {
                                     Log.d("UserRepo", "Delete user failed! " + e.toString());
@@ -463,6 +440,41 @@ public class UserRepository {
                 break;
         }
     }
+
+//    public void checkOfflineTime(String userId) {
+//        activityLogRepository = new ActivityLogRepository();
+//        activityLogRepository.getLastActLogDateTime(userId, new GetLastActLogDateTimeCallback() {
+//            @Override
+//            public void onSuccess(String datetime) {
+//                try {
+//                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//                    Date oldDate = format.parse(datetime);
+//
+//                    Date now = new Date();
+//
+//                    long diffInMillis = now.getTime() - oldDate.getTime();
+//
+//                    if (diffInMillis > 24 * 60 * 60 * 1000) {
+//                        Log.d("UserRepo", "Quá 24 giờ");
+//                        Log.d("UserRepo", "UserId: " + userId);
+//                        petRepository.petOffline(userId);
+//                    } else {
+//                        Log.d("UserRepo", "Chưa 24 giờ");
+//                    }
+//
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                    Log.d("UserRepo", "Lỗi parse");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Exception e) {
+//                Log.d("UserRepo", "Lỗi " + e.toString());
+//            }
+//        });
+//
+//    }
 }
 
 

@@ -171,4 +171,10 @@ public class Pet implements Serializable {
         this.iqscore = Math.min(100, this.iqscore += (score / 4));
         this.spiritscore = Math.min(100, this.spiritscore += score);
     }
+
+    public void petOffline() {
+        this.iqscore = Math.max(0, this.iqscore -= 5);
+        this.physicalscore = Math.max(0, this.physicalscore -= 5);
+        this.spiritscore = Math.max(0, this.spiritscore -= 5);
+    }
 }

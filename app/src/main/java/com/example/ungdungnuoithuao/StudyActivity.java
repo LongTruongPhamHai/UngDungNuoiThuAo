@@ -18,18 +18,13 @@ import java.util.Date;
 import java.util.Locale;
 
 import model.Pet;
-import model.SportLog;
-import model.StudyLog;
 import model.User;
+import repository.ActivityLogRepository;
 import repository.PetRepository;
-import repository.StudyLogRepository;
 import repository.UserRepository;
+import repository.callback.activitylog.AddActLogCallback;
 import repository.callback.pet.PetLoadedCallback;
 import repository.callback.pet.UpdatePetCallback;
-import repository.callback.sportlog.AddSpLogCallback;
-import repository.callback.sportlog.GetSpLogCallback;
-import repository.callback.studylog.AddStLogCallback;
-import repository.callback.studylog.GetStLogCallback;
 import repository.callback.user.UpdateUserCallback;
 import repository.callback.user.UserLoadedCallback;
 
@@ -65,15 +60,19 @@ public class StudyActivity extends AppCompatActivity {
                 // Test tăng chỉ số (Để tạm)
                 UserRepository userRepository = new UserRepository();
                 PetRepository petRepository = new PetRepository();
-                StudyLogRepository studyLogRepository = new StudyLogRepository();
+                ActivityLogRepository activityLogRepository = new ActivityLogRepository();
 
                 String type = "Tiếng Anh";
-                int score = 0, duration = 0;
+                int score = 0, duration = 0, distance = 0, step = 0;
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String addDate = dateFormat.format(new Date());
 
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                 String addTime = timeFormat.format(new Date());
+
+                SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                String datetime = fullFormat.format(new Date());
+
 
                 userRepository.getUser(userId, new UserLoadedCallback() {
                     @Override
@@ -136,10 +135,10 @@ public class StudyActivity extends AppCompatActivity {
                     }
                 });
 
-                studyLogRepository.addStLog(userId, addDate, addTime, type, duration, score, new AddStLogCallback() {
+                activityLogRepository.addActlog(userId, datetime, addDate, addTime, type, duration, distance, step, score, new AddActLogCallback() {
                     @Override
                     public void onSuccess() {
-                        Log.d("StudyAct", "Add sp log success!");
+                        Log.d("StudyAct", "Add act log success!");
                         Toast.makeText(StudyActivity.this, "Thêm dữ liệu thành công!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -159,15 +158,19 @@ public class StudyActivity extends AppCompatActivity {
                 // Test tăng chỉ số (Để tạm)
                 UserRepository userRepository = new UserRepository();
                 PetRepository petRepository = new PetRepository();
-                StudyLogRepository studyLogRepository = new StudyLogRepository();
+                ActivityLogRepository activityLogRepository = new ActivityLogRepository();
 
                 String type = "Kiểm tra";
-                int score = (int) (Math.random() * 11), duration = 0;
+                int score = (int) (Math.random() * 11), duration = 0, distance = 0, step = 0;
+
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String addDate = dateFormat.format(new Date());
 
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                 String addTime = timeFormat.format(new Date());
+
+                SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                String datetime = fullFormat.format(new Date());
 
                 userRepository.getUser(userId, new UserLoadedCallback() {
                     @Override
@@ -230,10 +233,10 @@ public class StudyActivity extends AppCompatActivity {
                     }
                 });
 
-                studyLogRepository.addStLog(userId, addDate, addTime, type, duration, score, new AddStLogCallback() {
+                activityLogRepository.addActlog(userId, datetime, addDate, addTime, type, duration, distance, step, score, new AddActLogCallback() {
                     @Override
                     public void onSuccess() {
-                        Log.d("StudyAct", "Add sp log success!");
+                        Log.d("StudyAct", "Add act log success!");
                         Toast.makeText(StudyActivity.this, "Thêm dữ liệu thành công!", Toast.LENGTH_SHORT).show();
                     }
 

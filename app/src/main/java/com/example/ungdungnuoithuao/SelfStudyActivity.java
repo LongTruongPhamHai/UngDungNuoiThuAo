@@ -1,53 +1,35 @@
 package com.example.ungdungnuoithuao;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import model.ActivityLog;
 import model.Pet;
-import model.SportLog;
-import model.StudyLog;
 import model.User;
+import repository.ActivityLogRepository;
 import repository.PetRepository;
-import repository.SportLogRepository;
-import repository.StudyLogRepository;
 import repository.UserRepository;
+import repository.callback.activitylog.AddActLogCallback;
+import repository.callback.activitylog.GetActLogCallback;
 import repository.callback.pet.PetLoadedCallback;
 import repository.callback.pet.UpdatePetCallback;
-import repository.callback.sportlog.GetSpLogCallback;
-import repository.callback.studylog.AddStLogCallback;
-import repository.callback.studylog.GetStLogCallback;
 import repository.callback.user.UpdateUserCallback;
 import repository.callback.user.UserLoadedCallback;
 
@@ -97,7 +79,7 @@ public class SelfStudyActivity extends AppCompatActivity {
 
         UserRepository userRepository = new UserRepository();
         PetRepository petRepository = new PetRepository();
-        StudyLogRepository studyLogRepository = new StudyLogRepository();
+        ActivityLogRepository activityLogRepository = new ActivityLogRepository();
 
         timer = new Timer();
 
@@ -144,6 +126,7 @@ public class SelfStudyActivity extends AppCompatActivity {
                 backBtn.setVisibility(View.VISIBLE);
                 resumeBtn.setVisibility(View.GONE);
                 endBtn.setVisibility(View.GONE);
+                loadingLl.setVisibility(View.VISIBLE);
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String addDate = dateFormat.format(new Date());
@@ -151,8 +134,11 @@ public class SelfStudyActivity extends AppCompatActivity {
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                 String addTime = timeFormat.format(new Date());
 
+                SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                String datetime = fullFormat.format(new Date());
+
                 String duration = getTimerText();
-                int durationValue = time, score = 0;
+                int durationValue = time, distance = 0, step = 0, score = 0;
 
                 messageTv.setText("Mỗi phút học là một bước tiến gần hơn đến ước mơ! Bạn đang đi đúng hướng!");
 
@@ -217,15 +203,16 @@ public class SelfStudyActivity extends AppCompatActivity {
                     }
                 });
 
-                studyLogRepository.addStLog(userId, addDate, addTime, type, durationValue, score, new AddStLogCallback() {
+                activityLogRepository.addActlog(userId, datetime, addDate, addTime, type, durationValue, distance, step, score, new AddActLogCallback() {
                     @Override
                     public void onSuccess() {
-                        Log.d("SelfStudyAct", "Add sp log success!");
-                        studyLogRepository.getStLog(userId, addDate, addTime, new GetStLogCallback() {
+                        Log.d("StudyAct", "Add act log success!");
+                        Toast.makeText(SelfStudyActivity.this, "Thêm dữ liệu thành công!", Toast.LENGTH_SHORT).show();
+                        activityLogRepository.getActlog(userId, addDate, addTime, new GetActLogCallback() {
                             @Override
-                            public void onSuccess(StudyLog stLog) {
-                                Log.d("SelfStudyAct", "Get st log success");
-                                timeTv.setText(stLog.getTime() + "\n" + stLog.getDate());
+                            public void onSuccess(ActivityLog actLog) {
+                                Log.d("SelfStudyAct", "Get act log success");
+                                timeTv.setText(actLog.getTime() + "\n" + actLog.getDate());
                                 timerRsTv.setText(duration);
                                 loadingLl.setVisibility(View.GONE);
                             }
@@ -233,15 +220,17 @@ public class SelfStudyActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(Exception e) {
                                 loadingLl.setVisibility(View.GONE);
-                                Log.d("SelfStudyAct", "Get sp log failed!");
+                                Log.d("SelfStudyAct", "Get act log failed!");
                             }
                         });
                     }
 
                     @Override
                     public void onFailure(Exception e) {
+                        Toast.makeText(SelfStudyActivity.this, "Thêm dữ liệu thất bại!", Toast.LENGTH_SHORT).show();
                     }
                 });
+
             }
         });
 
