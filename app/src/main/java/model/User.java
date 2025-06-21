@@ -73,6 +73,16 @@ public class User {
         }
     }
 
+    public void userStudyEnglish()
+    {
+        this.exp += 10;
+    }
+
+    public void userTest(int score) {
+        if (score >= 7) this.exp += score;
+        else this.exp += 2;
+    }
+
     public void userPracticeTime(int duration) {
         this.exp += (int) Math.round((float) duration / 60);
         gainLevel();
@@ -93,4 +103,11 @@ public class User {
         gainLevel();
     }
 
+    public void userPlayGame(String result) {
+        if (result.equals("win")) {
+            this.exp += 10;
+        } else {
+            this.exp += 0;
+        }
+    }
 }

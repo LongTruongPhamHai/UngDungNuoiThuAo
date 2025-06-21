@@ -241,6 +241,20 @@
                         app:strokeWidth="1dp" />
 
                     <Button
+                        android:id="@+id/guide_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#f1b15a"
+                        android:padding="5dp"
+                        android:text="Hướng dẫn"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:strokeColor="@color/black"
+                        app:strokeWidth="1dp" />
+
+                    <Button
                         android:id="@+id/leaderboard_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
