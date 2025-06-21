@@ -244,25 +244,38 @@ public class PetRepository {
 
     public void trainingPet(Pet nPet, String type, int score) {
         switch (type) {
-            case "run":
+            case "Tiếng Anh":
+                nPet.petEnglish();
+                Log.d("PetRepo", "Training success!");
+                break;
+
+            case "Kiểm tra":
+                nPet.petTest(score);
+                Log.d("PetRepo", "Training success!");
+                break;
+
+            case "Tự học":
+                nPet.petSelfStudy(score);
+                Log.d("PetRepo", "Training success!");
+                break;
+
+            case "Chạy bộ":
                 nPet.petRun(score);
                 Log.d("PetRepo", "Training success!");
                 break;
 
-            case "cycle":
+            case "Đạp xe":
                 nPet.petBicycle(score);
                 Log.d("PetRepo", "Training success!");
                 break;
 
-            case "walk":
-                nPet.petWalk(score);
+            case "Yoga":
+                nPet.petYoga(score);
                 Log.d("PetRepo", "Training success!");
                 break;
 
-            case "yoga":
-            case "bodyweight":
-            case "aerobic":
-                nPet.petTimeSport(score);
+            case "Giải trí":
+                nPet.petPlayGame(score);
                 Log.d("PetRepo", "Training success!");
                 break;
 

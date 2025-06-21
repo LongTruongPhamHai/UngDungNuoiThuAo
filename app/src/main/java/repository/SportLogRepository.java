@@ -81,14 +81,6 @@ public class SportLogRepository {
                         sumDistance += data.getDistance();
                         sumStep += data.getStep();
 
-//                        String duration = data.getDuration();
-//                        String[] parts = duration.split(":");
-//                        int hours = Integer.parseInt(parts[0]);
-//                        int minutes = Integer.parseInt(parts[1]);
-//                        int seconds = Integer.parseInt(parts[2]);
-//
-//                        totalSeconds += hours * 3600 + minutes * 60 + seconds;
-
                         double duration = data.getDuration();
                         totalSeconds += (int) Math.round(duration);
                     }
