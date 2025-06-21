@@ -39,7 +39,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -47,19 +46,16 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import model.ActivityLog;
 import model.Pet;
-import model.SportLog;
 import model.User;
-import repository.ChallengeRepository;
-import repository.DayChallengeRepository;
+import repository.ActivityLogRepository;
 import repository.PetRepository;
-import repository.SportLogRepository;
-import repository.UserChallengeRepository;
 import repository.UserRepository;
+import repository.callback.activitylog.AddActLogCallback;
+import repository.callback.activitylog.GetActLogCallback;
 import repository.callback.pet.PetLoadedCallback;
 import repository.callback.pet.UpdatePetCallback;
-import repository.callback.sportlog.AddSpLogCallback;
-import repository.callback.sportlog.GetSpLogCallback;
 import repository.callback.user.UpdateUserCallback;
 import repository.callback.user.UserLoadedCallback;
 
@@ -81,7 +77,7 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
 
-    private int time = 0, distance = 0, step = 0, score, displayedSteps = 0, initialStep = -1;
+    private int time = 0, distance = 0, step = 0, score = 0, displayedSteps = 0, initialStep = -1, point;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -156,7 +152,7 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
 
         UserRepository userRepository = new UserRepository();
         PetRepository petRepository = new PetRepository();
-        SportLogRepository sportLogRepository = new SportLogRepository();
+        ActivityLogRepository activityLogRepository = new ActivityLogRepository();
 
         timer = new Timer();
 
@@ -279,6 +275,7 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                 resumeBtn.setVisibility(View.GONE);
                 endBtn.setVisibility(View.GONE);
                 back2Btn.setVisibility(View.VISIBLE);
+                loadingLl.setVisibility(View.VISIBLE);
 
                 if (isTracking) {
                     isTracking = false;
@@ -293,6 +290,9 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                 String addTime = timeFormat.format(new Date());
 
+                SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                String datetime = fullFormat.format(new Date());
+
                 String duration = getTimerText();
                 int durationValue = time;
                 distance = Math.round(totalDistance);
@@ -300,14 +300,14 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
 
                 switch (type) {
                     case "Chạy bộ":
-                        score = step;
+                        point = step;
                         messageTv.setText("Bạn đã bứt phá giới hạn!\nHãy giữ vững phong độ nhé!");
                         distanceRsLl.setVisibility(View.VISIBLE);
                         stepRsLl.setVisibility(View.VISIBLE);
                         break;
 
                     case "Đạp xe":
-                        score = distance;
+                        point = distance;
                         step = 0;
                         messageTv.setText("Đạp hết ga – khỏe hết mình!\nTuyệt vời lắm!");
                         distanceRsLl.setVisibility(View.VISIBLE);
@@ -315,7 +315,7 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                         break;
 
                     case "Yoga":
-                        score = durationValue;
+                        point = durationValue;
                         distance = 0;
                         step = 0;
                         messageTv.setText(" Bình yên đến từ bên trong!\nBạn đã làm rất tốt!");
@@ -327,7 +327,7 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                 userRepository.getUser(userId, new UserLoadedCallback() {
                     @Override
                     public void onUserLoaded(User nUser) {
-                        userRepository.trainingUser(nUser, type, score);
+                        userRepository.trainingUser(nUser, type, point);
                         userRepository.updateUserStat(userId, nUser, new UpdateUserCallback() {
                             @Override
                             public void onSuccess() {
@@ -360,7 +360,7 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                 petRepository.getPet(userId, new PetLoadedCallback() {
                     @Override
                     public void onPetLoaded(Pet nPet) {
-                        petRepository.trainingPet(nPet, type, score);
+                        petRepository.trainingPet(nPet, type, point);
                         petRepository.updatePetStat(userId, nPet, new UpdatePetCallback() {
                             @Override
                             public void onSuccess() {
@@ -385,18 +385,18 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                     }
                 });
 
-                sportLogRepository.addSpLog(userId, addDate, addTime, type, durationValue, distance, step, new AddSpLogCallback() {
+                activityLogRepository.addActlog(userId, datetime, addDate, addTime, type, durationValue, distance, step, score, new AddActLogCallback() {
                     @Override
                     public void onSuccess() {
-                        Log.d("SportAct", "Add sp log success!");
-                        sportLogRepository.getSpLog(userId, addDate, addTime, new GetSpLogCallback() {
+                        Log.d("SportAct", "Add act log success!");
+                        activityLogRepository.getActlog(userId, addDate, addTime, new GetActLogCallback() {
                             @Override
-                            public void onSuccess(SportLog spLog) {
+                            public void onSuccess(ActivityLog actLog) {
                                 Log.d("SportAct", "Get sp log success");
-                                timeTv.setText(spLog.getTime() + "\n" + spLog.getDate());
+                                timeTv.setText(actLog.getTime() + "\n" + actLog.getDate());
                                 timerRsTv.setText(duration);
-                                distanceRsTv.setText(String.valueOf(spLog.getDistance()) + " m");
-                                stepRsTv.setText(String.valueOf(spLog.getStep()));
+                                distanceRsTv.setText(String.valueOf(actLog.getDistance()) + " m");
+                                stepRsTv.setText(String.valueOf(actLog.getStep()));
                                 loadingLl.setVisibility(View.GONE);
                             }
 
@@ -410,7 +410,7 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
 
                     @Override
                     public void onFailure(Exception e) {
-                        Log.d("SportAct", "Add sp log failed! " + e.toString());
+                        Toast.makeText(SportActivity.this, "Thêm dữ liệu thất bại!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -419,10 +419,13 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
         back2Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                headerTv.setText("Thể thao");
                 back2Btn.setVisibility(View.GONE);
                 startLl.setVisibility(View.GONE);
+                startBtn.setVisibility(View.VISIBLE);
                 selectLl.setVisibility(View.VISIBLE);
                 backBtn.setVisibility(View.VISIBLE);
+                typeSp.setSelection(0);
             }
         });
 

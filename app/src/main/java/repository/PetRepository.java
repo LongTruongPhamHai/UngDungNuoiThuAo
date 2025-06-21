@@ -1,17 +1,25 @@
 package repository;
 
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.ungdungnuoithuao.StudyActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import model.Pet;
 import model.User;
+import repository.callback.activitylog.AddActLogCallback;
+import repository.callback.activitylog.GetLastActLogDateTimeCallback;
 import repository.callback.pet.PetLoadedCallback;
 import repository.callback.pet.PetSetupCallback;
 import repository.callback.pet.UpdatePetCallback;
@@ -131,70 +139,7 @@ public class PetRepository {
                     Log.d("PetRepo", "Update pet failed! No pet found! " + e.toString());
                     callback.onFailure(e);
                 });
-
-
     }
-
-//                db.collection("user").document(userId).get()
-//                        .addOnSuccessListener(documentSnapshot -> {
-//                            Log.d("UserRepo", "Load user success");
-//                            String storedPw = documentSnapshot.getString("password");
-//
-//
-//                            if (BCrypt.checkpw(password, storedPw)) {
-//                                Map<String, Object> data = new HashMap<>();
-//                                data.put("petname", nPet.getPetname());
-//                                data.put("iqscore", nPet.getIqscore());
-//                                data.put("physicalscore", nPet.getPhysicalscore());
-//                                data.put("spiritscore", nPet.getSpiritscore());
-//
-//                                db.collection("pet").whereEqualTo("userid", userId).get()
-//                                        .addOnSuccessListener(documentSnapshots -> {
-//                                            DocumentSnapshot doc = documentSnapshots.getDocuments().get(0);
-//                                            doc.getReference().update(data)
-//                                                    .addOnSuccessListener(v -> {
-//                                                        Log.d("PetRepo", "Update pet success");
-//                                                        callback.onSuccess();
-//                                                    })
-//                                                    .addOnFailureListener(e -> {
-//                                                        Log.d("PetRepo", "Update pet failed! " + e.toString());
-//                                                        callback.onFailure(e);
-//                                                    });
-//                                        })
-//                                        .addOnFailureListener(e -> {
-//                                            Log.d("PetRepo", "Update pet failed! No pet found! " + e.toString());
-//                                            callback.onFailure(e);
-//                                        });
-//                            }
-//                        })
-//                        .addOnFailureListener(e -> {
-//
-//                        })
-
-    //        db.collection("pet").whereEqualTo("userid", userId).get()
-//                .addOnSuccessListener(documentSnapshots -> {
-//                    DocumentSnapshot petDoc = documentSnapshots.getDocuments().get(0);
-//                    String petId = petDoc.getId();
-//                    Map<String, Object> data = new HashMap<>();
-//                    data.put("petname", nPet.getPetname());
-//                    data.put("iqscore", nPet.getIqscore());
-//                    data.put("physicalscore", nPet.getPhysicalscore());
-//                    data.put("spiritscore", nPet.getPhysicalscore());
-//
-//                    db.collection("pet").document(petId).update(data)
-//                            .addOnSuccessListener(v -> {
-//                                Log.d("PetRepo", "Update pet success");
-//                                callback.onSuccess();
-//                            })
-//                            .addOnFailureListener(e -> {
-//                                Log.d("PetRepo", "Update pet failed! " + e.toString());
-//                                callback.onFailure(e);
-//                            });
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.d("PetRepo", "Update pet failed! No pet found! " + e.toString());
-//                    callback.onFailure(e);
-//                });
 
     public void resetPet(String userId, UpdatePetCallback callback) {
         db.collection("pet").whereEqualTo("userid", userId).get()
@@ -284,4 +229,145 @@ public class PetRepository {
                 break;
         }
     }
+
+    public void checkOfflineTime(String userId) {
+        ActivityLogRepository activityLogRepository = new ActivityLogRepository();
+        activityLogRepository.getLastActLogDateTime(userId, new GetLastActLogDateTimeCallback() {
+            @Override
+            public void onSuccess(String datetime) {
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    Date oldDate = format.parse(datetime);
+
+                    Date now = new Date();
+
+                    long diffInMillis = now.getTime() - oldDate.getTime();
+
+                    if (diffInMillis > 24 * 60 * 60 * 1000) {
+                        Log.d("PetRepo", "Quá 24 giờ");
+                        Log.d("PetRepo", "UserId: " + userId);
+                        getPet(userId, new PetLoadedCallback() {
+                            @Override
+                            public void onPetLoaded(Pet nPet) {
+                                nPet.petOffline();
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("iqscore", nPet.getIqscore());
+                                data.put("physicalscore", nPet.getPhysicalscore());
+                                data.put("spiritscore", nPet.getSpiritscore());
+
+                                updatePetStat(userId, nPet, new UpdatePetCallback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.d("PetRepo", "Update pet stat success");
+
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                                        String addDate = dateFormat.format(new Date());
+
+                                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                                        String addTime = timeFormat.format(new Date());
+
+                                        SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                                        String datetime = fullFormat.format(new Date());
+
+                                        ActivityLogRepository activityLogRepository = new ActivityLogRepository();
+                                        activityLogRepository.addActlog(userId, datetime, addDate, addTime, "Offline", 0, 0, 0, 0, new AddActLogCallback() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Log.d("PetRepo", "Add act log success!");
+                                            }
+
+                                            @Override
+                                            public void onFailure(Exception e) {
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception e) {
+                                        Log.d("PetRepo", "Update pet stat failed!");
+                                    }
+
+                                    @Override
+                                    public void onIncorrectPassword() {
+                                        Log.d("PetRepo", "Update pet stat failed!");
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(Exception errorMessage) {
+                                Log.d("PetRepo", "Update pet stat failed!");
+                            }
+                        });
+                    } else {
+                        Log.d("PetRepo", "Chưa 24 giờ");
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.d("PetRepo", "Lỗi parse");
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("PetRepo", "Lỗi " + e.toString());
+            }
+        });
+    }
+
+//    public void petOffline(String userId) {
+//        Log.d("PetRepo", "UserId: " + userId);
+//        getPet(userId, new PetLoadedCallback() {
+//            @Override
+//            public void onPetLoaded(Pet nPet) {
+//                nPet.petOffline();
+//                Map<String, Object> data = new HashMap<>();
+//                data.put("iqscore", nPet.getIqscore());
+//                data.put("physicalscore", nPet.getPhysicalscore());
+//                data.put("spiritscore", nPet.getSpiritscore());
+//
+//                db.collection("pet").whereEqualTo("userid", userId).get()
+//                        .addOnSuccessListener(documentSnapshots -> {
+//                            DocumentSnapshot doc = documentSnapshots.getDocuments().get(0);
+//                            doc.getReference().update(data)
+//                                    .addOnSuccessListener(v -> {
+//                                        Log.d("PetRepo", "Update pet stat success");
+//
+//                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+//                                        String addDate = dateFormat.format(new Date());
+//
+//                                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+//                                        String addTime = timeFormat.format(new Date());
+//
+//                                        SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//                                        String datetime = fullFormat.format(new Date());
+//
+//                                        ActivityLogRepository activityLogRepository = new ActivityLogRepository();
+//                                        activityLogRepository.addActlog(userId, datetime, addDate, addTime, "Offline", 0, 0, 0, 0, new AddActLogCallback() {
+//                                            @Override
+//                                            public void onSuccess() {
+//                                                Log.d("StudyAct", "Add act log success!");
+//                                            }
+//
+//                                            @Override
+//                                            public void onFailure(Exception e) {
+//                                            }
+//                                        });
+//                                    })
+//                                    .addOnFailureListener(e -> {
+//                                        Log.d("PetRepo", "Update pet stat failed! " + e.toString());
+//
+//                                    });
+//                        })
+//                        .addOnFailureListener(e -> {
+//                            Log.d("PetRepo", "Update pet failed! No pet found! " + e.toString());
+//                        });
+//            }
+//
+//            @Override
+//            public void onFailure(Exception errorMessage) {
+//
+//            }
+//        });
 }
