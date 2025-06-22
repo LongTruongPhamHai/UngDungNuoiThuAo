@@ -129,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 // Test tăng chỉ số (Tạm thời)
                 String type = "Giải trí";
-                int score = Math.random() < 0.5 ? 0 : 10, duration = 0, distance = 0, step = 0;;
+                int score = Math.random() < 0.5 ? 0 : 10, duration = 60 * 5, distance = 0, step = 0;;
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String addDate = dateFormat.format(new Date());

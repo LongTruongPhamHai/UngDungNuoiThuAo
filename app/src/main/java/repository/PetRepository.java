@@ -270,7 +270,7 @@ public class PetRepository {
                                         String datetime = fullFormat.format(new Date());
 
                                         ActivityLogRepository activityLogRepository = new ActivityLogRepository();
-                                        activityLogRepository.addActlog(userId, datetime, addDate, addTime, "Offline", 0, 0, 0, 0, new AddActLogCallback() {
+                                        activityLogRepository.addActlog(userId, datetime, addDate, addTime, "Giảm chỉ số (Quá 24h không hoạt động)", 0, 0, 0, 0, new AddActLogCallback() {
                                             @Override
                                             public void onSuccess() {
                                                 Log.d("PetRepo", "Add act log success!");

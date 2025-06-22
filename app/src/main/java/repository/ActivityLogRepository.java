@@ -15,8 +15,9 @@ import model.ActivityLog;
 import repository.callback.activitylog.AddActLogCallback;
 import repository.callback.activitylog.DeleteActLogCallback;
 import repository.callback.activitylog.GetActLogCallback;
-import repository.callback.activitylog.GetListActLogCallback;
+import repository.callback.activitylog.GetDayActLogCallback;
 import repository.callback.activitylog.GetLastActLogDateTimeCallback;
+import repository.callback.activitylog.GetListActLogCallback;
 
 public class ActivityLogRepository {
     private FirebaseFirestore db;
@@ -90,7 +91,7 @@ public class ActivityLogRepository {
                 });
     }
 
-    public void getDayActlog(String userId, String date, String type, GetListActLogCallback callback)
+    public void getDayActlog(String userId, String date, String type, GetDayActLogCallback callback)
     {
         db.collection("activitylog")
                 .whereEqualTo("userid", userId)
@@ -154,35 +155,50 @@ public class ActivityLogRepository {
                 });
     }
 
-//    public void getAllActlog(String userId, GetListActLogCallback callback) {
-//        db.collection("activitylog")
-//                .orderBy("datetime", Query.Direction.DESCENDING)
-//                .get()
-//                .addOnSuccessListener(documentSnapshots -> {
-//                    Map<String, Object> actLogList = new HashMap<>();
-//                    for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-//                        String storedUId = documentSnapshot.getString("userid");
-//                        if(storedUId.equals(userId)) {
-//                            ActivityLog actLog = documentSnapshot.toObject(ActivityLog.class);
-//                            actLogList.put("sumdistance", String.valueOf(sumDistance));
-//                            actLogList.put("sumduration", totalDuration);
-//                            actLogList.put("sumstep", String.valueOf(sumStep));
-//                            actLogList.put("avgscore", String.format("%.2f", avgScore));
-//                            actLogList.put("lesson", String.valueOf((int) size));
-//                            actLogList.put("wincount", String.valueOf(winCount));
-//                            actLogList.put("lostcount", String.valueOf(lostCount));
-//                            callback.onSuccess(datetime);
-//                            break;
-//                        } else {
-//                            Log.d("ActLogRepo", "No data found!");
-//                        }
-//                    }
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.d("ActLogRepo", "Get lastest actlog datetime failed!");
-//                    callback.onFailure(e);
-//                });
-//    }
+    public void getAllActlog(String userId, GetListActLogCallback callback) {
+        db.collection("activitylog")
+                .orderBy("datetime", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(documentSnapshots -> {
+                    List<Map<String, Object>> actLogList = new ArrayList<>();
+                    int totalSeconds = 0;
+                    for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                        String storedUId = documentSnapshot.getString("userid");
+                        if(storedUId.equals(userId)) {
+                            ActivityLog actLog = documentSnapshot.toObject(ActivityLog.class);
+                            double duration = actLog.getDuration();
+                            totalSeconds += (int) Math.round(duration);
+
+                            int totalHours = totalSeconds / 3600;
+                            int totalMinutes = (totalSeconds % 3600) / 60;
+                            int totalSecs = totalSeconds % 60;
+                            String totalDuration = String.format("%02d:%02d:%02d", totalHours, totalMinutes, totalSecs);
+
+                            Map<String, Object> actLogMap = new HashMap<>();
+                            actLogMap.put("type", actLog.getType());
+                            actLogMap.put("date", actLog.getDate());
+                            actLogMap.put("time", actLog.getTime());
+                            actLogMap.put("duration", totalDuration);
+                            actLogMap.put("distance", String.valueOf(actLog.getDistance()));
+                            actLogMap.put("step", String.valueOf(actLog.getStep()));
+                            actLogMap.put("score", String.valueOf(actLog.getScore()));
+                            if (actLog.getType().equals("Giải trí")) {
+                                if (actLog.getScore() == 10)    actLogMap.put("result", "Thắng");
+                                else actLogMap.put("result", "Thua");
+                            }
+                            else actLogMap.put("result", "Rỗng");
+                            actLogList.add(actLogMap);
+                        } else {
+                            Log.d("ActLogRepo", "No data found!");
+                        }
+                    }
+                    callback.onSuccess(actLogList);
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("ActLogRepo", "Get list actlog failed!");
+                    callback.onFailure(e);
+                });
+    }
 
     public void deleteActlog(String userId, DeleteActLogCallback callback) {
         db.collection("activitylog").whereEqualTo("userid", userId).get()
