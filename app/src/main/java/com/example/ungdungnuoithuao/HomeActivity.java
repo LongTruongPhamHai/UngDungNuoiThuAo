@@ -34,7 +34,7 @@ import repository.callback.user.UpdateUserCallback;
 import repository.callback.user.UserLoadedCallback;
 
 public class HomeActivity extends AppCompatActivity {
-    private TextView usernameTv, levelTv, petnameTv, statusTv;
+    private TextView usernameTv, levelTv, coinTv, petnameTv, statusTv;
     private ProgressBar levelBar, overallBar;
     private LinearLayout loadingLl;
     String userId;
@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
 
         usernameTv = findViewById(R.id.username_tv);
         levelTv = findViewById(R.id.level_tv);
+        coinTv = findViewById(R.id.coin_tv);
         petnameTv = findViewById(R.id.petname_tv);
         statusTv = findViewById(R.id.status_tv);
 
@@ -265,15 +266,16 @@ public class HomeActivity extends AppCompatActivity {
             public void onUserLoaded(User nUser) {
                 nUser.gainLevel();
                 usernameTv.setText(nUser.getUsername());
-                levelTv.setText("Level " + nUser.getLevel());
+                levelTv.setText("Level " + String.valueOf(nUser.getLevel()));
                 levelBar.setProgress(nUser.getExp());
+                coinTv.setText("Xu: " + String.valueOf(nUser.getCoin()));
                 loadingLl.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Exception e) {
                 loadingLl.setVisibility(View.GONE);
-                Toast.makeText(HomeActivity.this, "Load user error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Tải dữ liệu không thành công! Vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
             }
         });
     }

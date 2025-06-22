@@ -1,7 +1,6 @@
 package com.example.ungdungnuoithuao;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -18,8 +17,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.tabs.TabLayout;
-
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -29,7 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import repository.ActivityLogRepository;
-import repository.callback.activitylog.GetDayActLogCallback;
+import repository.callback.activitylog.GetListActLogCallback;
 
 public class SummaryActivity extends AppCompatActivity {
     private RadioButton dayRb, monthRb, yearRb;
@@ -40,7 +37,8 @@ public class SummaryActivity extends AppCompatActivity {
 
     private TableRow avgDayScoreTvTr, avgDayScoreTr, stepTvTr, sumDayStepTr, distanceTvTr, sumDayDistanceTr,
             avgMYScoreTvTr, avgMYScoreTr, mYStepTvTr, mYDistanceTvTr, mYStepTr, mYDistanceTr;
-    private ImageButton backDayBtn, nextDayBtn, backMonthBtn, nextMonthBtn, backYearBtn, nextYearBtn;
+    private ImageButton backDayBtn, nextDayBtn, backMonthBtn, nextMonthBtn, backYearBtn, nextYearBtn,
+            nextStTypeBtn, backStTypeBtn, nextSpTypeBtn, backSpTypeBtn;
     private Button backBtn;
     private TextView dayTv, monthTv, yearTv, stTypeTv, spTypeTv,
             sumStDayDurationTv, sumDayLessonTv, avgDayScoreTv,
@@ -70,6 +68,8 @@ public class SummaryActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        activityLogRepository = new ActivityLogRepository();
 
         dayRb = findViewById(R.id.day_rb);
         monthRb = findViewById(R.id.month_rb);
@@ -120,6 +120,12 @@ public class SummaryActivity extends AppCompatActivity {
         backYearBtn = findViewById(R.id.back_year_btn);
         nextYearBtn = findViewById(R.id.next_year_btn);
 
+        nextStTypeBtn = findViewById(R.id.next_st_type_btn);
+        backStTypeBtn = findViewById(R.id.back_st_type_btn);
+
+        nextSpTypeBtn = findViewById(R.id.next_sp_type_btn);
+        backSpTypeBtn = findViewById(R.id.back_sp_type_btn);
+
         backBtn = findViewById(R.id.back_btn);
 
         dayTv = findViewById(R.id.day_tv);
@@ -165,71 +171,108 @@ public class SummaryActivity extends AppCompatActivity {
         String toDayStr = dateFormat.format(currentDate);
         dayTv.setText(toDayStr);
 
-        activityLogRepository = new ActivityLogRepository();
-
         stType = listStType.get(0);
         spType = listSpType.get(0);
+
+        stTypeTv.setText(stType);
+        spTypeTv.setText(spType);
+
+        loadStTextView(userId, toDayStr, stType);
+        loadSpTextView(userId, dateFormat.format(currentDate), listSpType.get(spTypeIndex));
+        loadGameTextView(userId, toDayStr, "Giải trí");
 
         nextDayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingLl.setVisibility(View.VISIBLE);
                 Date nextDate = nextDay(currentDate), todayDate = new Date();
 
                 if (nextDate.after(todayDate)) {
-                    Toast.makeText(SummaryActivity.this, "Action not available!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SummaryActivity.this, "Hôm nay là ngày mới nhất rồi!", Toast.LENGTH_SHORT).show();
                 } else {
                     currentDate = nextDay(currentDate);
                     dayTv.setText(dateFormat.format(currentDate));
+
+                    loadStTextView(userId, dateFormat.format(currentDate), stType);
+                    loadSpTextView(userId, dateFormat.format(currentDate), listSpType.get(spTypeIndex));
+                    loadGameTextView(userId, dateFormat.format(currentDate), "Giải trí");
                 }
-
-
-
-
-//                sportLogRepository.getDaySpLog(userId, dateFormat.format(currentDate), type.get(typeIndex), new GetDaySpLogCallback() {
-//                    @Override
-//                    public void onSuccess(Map<String, Object> sumDataList) {
-//                        loadingLl.setVisibility(View.GONE);
-//                        Toast.makeText(SportSumActivity.this, "Loading success!", Toast.LENGTH_SHORT).show();
-//                        loadTextView(sumDataList, type.get(typeIndex), stepTvTr, distanceTvTr, sumDayStepTvTr, sumDayDistanceTvTr, sumDayDurationTv, sumDayStepTv, sumDayDistanceTv);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Exception e) {
-//                        loadingLl.setVisibility(View.GONE);
-//                        Toast.makeText(SportSumActivity.this, "Loading failed!", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-                loadingLl.setVisibility(View.GONE);
-
             }
         });
 
         backDayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingLl.setVisibility(View.VISIBLE);
                 currentDate = backDay(currentDate);
                 dayTv.setText(dateFormat.format(currentDate));
 
-                loadingLl.setVisibility(View.GONE);
-
+                loadStTextView(userId, dateFormat.format(currentDate), stType);
+                loadSpTextView(userId, dateFormat.format(currentDate), listSpType.get(spTypeIndex));
+                loadGameTextView(userId, dateFormat.format(currentDate), "Giải trí");
             }
         });
 
+        nextStTypeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (stTypeIndex < listStType.size() - 1) {
+                    stTypeIndex++;
+                } else {
+                    stTypeIndex = 0;
+                }
 
+                stTypeTv.setText(listStType.get(stTypeIndex));
+                loadStTextView(userId, dateFormat.format(currentDate), listStType.get(stTypeIndex));
+            }
+        });
+
+        backStTypeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (stTypeIndex > 0) {
+                    stTypeIndex--;
+                } else {
+                    stTypeIndex = listStType.size() - 1;
+                }
+
+                stTypeTv.setText(listStType.get(stTypeIndex));
+                loadStTextView(userId, dateFormat.format(currentDate), listStType.get(stTypeIndex));
+            }
+        });
+
+        nextSpTypeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (spTypeIndex < listSpType.size() - 1) {
+                    spTypeIndex++;
+                } else {
+                    spTypeIndex = 0;
+                }
+
+                spTypeTv.setText(listSpType.get(spTypeIndex));
+                loadSpTextView(userId, dateFormat.format(currentDate), listSpType.get(spTypeIndex));
+            }
+        });
+
+        backSpTypeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (spTypeIndex > 0) {
+                    spTypeIndex--;
+                } else {
+                    spTypeIndex = listSpType.size() - 1;
+                }
+                spTypeTv.setText(listSpType.get(spTypeIndex));
+                loadSpTextView(userId, dateFormat.format(currentDate), listSpType.get(spTypeIndex));
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
-
-//    @Override
-//    public void onResume()
-//    {
-//        super.onResume();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-//        Log.d("SumAct", "Date: " + dateFormat.format(currentDate));
-//        Log.d("SumAct", "StType: " + stType);
-//        Log.d("SumAct", "SpType: " + spType);
-//    }
 
     private Date nextDay(Date currentDate) {
         Calendar calendar = Calendar.getInstance();
@@ -243,5 +286,89 @@ public class SummaryActivity extends AppCompatActivity {
         calendar.setTime(currentDate);
         calendar.add(Calendar.DAY_OF_MONTH, -1);
         return calendar.getTime();
+    }
+
+    private void loadStTextView(String userId, String date, String type) {
+        loadingLl.setVisibility(View.VISIBLE);
+        int result = 0;
+        activityLogRepository.getDayActlog(userId, date, type, new GetListActLogCallback() {
+            @Override
+            public void onSuccess(Map<String, Object> sumDataList) {
+                sumStDayDurationTv.setText(sumDataList.get("sumduration").toString());
+                sumDayLessonTv.setText(sumDataList.get("lesson").toString());
+                avgDayScoreTv.setText(sumDataList.get("avgscore").toString());
+
+                avgDayScoreTvTr.setVisibility(View.GONE);
+                avgDayScoreTr.setVisibility(View.GONE);
+
+                if (type.equals("Kiểm tra")) {
+                    avgDayScoreTvTr.setVisibility(View.VISIBLE);
+                    avgDayScoreTr.setVisibility(View.VISIBLE);
+                }
+                loadingLl.setVisibility(View.GONE);
+//                Toast.makeText(SummaryActivity.this, "Tải dữ liệu thành công!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                loadingLl.setVisibility(View.GONE);
+                Toast.makeText(SummaryActivity.this, "Tải dữ liệu không thành công! Vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadSpTextView(String userId, String date, String type) {
+        loadingLl.setVisibility(View.VISIBLE);
+        activityLogRepository.getDayActlog(userId, date, type, new GetListActLogCallback() {
+            @Override
+            public void onSuccess(Map<String, Object> sumDataList) {
+                sumSpDayDurationTv.setText(sumDataList.get("sumduration").toString());
+                sumDayStepTv.setText(sumDataList.get("sumstep").toString());
+                sumDayDistanceTv.setText(sumDataList.get("sumdistance").toString());
+
+                stepTvTr.setVisibility(View.GONE);
+                distanceTvTr.setVisibility(View.GONE);
+                sumDayStepTr.setVisibility(View.GONE);
+                sumDayDistanceTr.setVisibility(View.GONE);
+
+                if (type.equals("Chạy bộ")) {
+                    stepTvTr.setVisibility(View.VISIBLE);
+                    distanceTvTr.setVisibility(View.VISIBLE);
+                    sumDayStepTr.setVisibility(View.VISIBLE);
+                    sumDayDistanceTr.setVisibility(View.VISIBLE);
+                }
+                if (type.equals("Đạp xe")) {
+                    distanceTvTr.setVisibility(View.VISIBLE);
+                    sumDayDistanceTr.setVisibility(View.VISIBLE);
+                }
+                loadingLl.setVisibility(View.GONE);
+//                Toast.makeText(SummaryActivity.this, "Tải dữ liệu thành công!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                loadingLl.setVisibility(View.GONE);
+                Toast.makeText(SummaryActivity.this, "Tải dữ liệu không thành công! Vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void loadGameTextView(String userId, String date, String type) {
+        loadingLl.setVisibility(View.VISIBLE);
+        activityLogRepository.getDayActlog(userId, date, type, new GetListActLogCallback() {
+            @Override
+            public void onSuccess(Map<String, Object> sumDataList) {
+                sumDayWinTv.setText(sumDataList.get("wincount").toString());
+                sumDayLostTv.setText(sumDataList.get("lostcount").toString());
+                loadingLl.setVisibility(View.GONE);
+//                Toast.makeText(SummaryActivity.this, "Tải dữ liệu thành công!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                loadingLl.setVisibility(View.GONE);
+                Toast.makeText(SummaryActivity.this, "Tải dữ liệu không thành công! Vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

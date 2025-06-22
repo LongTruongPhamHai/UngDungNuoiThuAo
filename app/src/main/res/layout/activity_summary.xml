@@ -278,8 +278,7 @@
                                 android:gravity="center"
                                 android:textAllCaps="true"
                                 android:textColor="@color/black"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
+                                android:textSize="20sp" />
 
                             <ImageButton
                                 android:id="@+id/next_st_type_btn"
@@ -590,8 +589,7 @@
                                 android:gravity="center"
                                 android:textAllCaps="true"
                                 android:textColor="@color/black"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
+                                android:textSize="20sp" />
 
                             <ImageButton
                                 android:id="@+id/next_sp_type_btn"
@@ -899,7 +897,7 @@
                             android:text="Giải trí"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:textSize="14sp"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <LinearLayout

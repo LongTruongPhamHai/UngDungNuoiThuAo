@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class User {
     private String userid;
     private String email, username, password;
-    private int exp = 0, level = 1;
+    private int exp = 0, level = 1, coin = 0;
 
     public User() {
     }
@@ -16,6 +16,7 @@ public class User {
         this.password = password;
         this.exp = 0;
         this.level = 1;
+        this.coin = 50;
     }
 
     public String getUserid() {
@@ -66,6 +67,14 @@ public class User {
         this.level = level;
     }
 
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
     public void gainLevel() {
         while (this.exp >= 100) {
             this.exp -= 100;
@@ -75,33 +84,44 @@ public class User {
 
     public void userStudyEnglish() {
         this.exp += 10;
+        this.coin += 10;
         gainLevel();
     }
 
     public void userTest(int score) {
-        if (score >= 7) this.exp += score;
-        else this.exp += 2;
+        if (score >= 7) {
+            this.exp += score;
+            this.coin += score;
+        }
+        else {
+            this.exp += 2;
+            this.coin += 2;
+        }
         gainLevel();
     }
 
     public void userRun(int step) {
         this.exp += (int) Math.round((float) step / 10);
+        this.coin += (int) Math.round((float) step / 10);
         gainLevel();
     }
 
     public void userBicycle(int distance) {
         this.exp += (distance / 10) * 2;
+        this.coin += (distance / 10) * 2;
         gainLevel();
     }
 
     public void userTimePractice(int duration) {
         this.exp += (int) Math.round((float) duration / 60);
+        this.coin += (int) Math.round((float) duration / 60);
         gainLevel();
     }
 
     public void userPlayGame(int score) {
         // Win = 10; Loss = 0;
         this.exp += score;
+        this.coin += score;
         gainLevel();
     }
 }
