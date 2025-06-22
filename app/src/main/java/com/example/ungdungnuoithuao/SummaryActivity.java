@@ -29,24 +29,16 @@ import repository.ActivityLogRepository;
 import repository.callback.activitylog.GetDayActLogCallback;
 
 public class SummaryActivity extends AppCompatActivity {
-    private RadioButton dayRb, monthRb, yearRb;
-    private TableLayout dayStSumTl, daySpSumTl, dayGSumTl,
-            mYStSumTl, mYSpSumTl, mYGSumTl;
-    private LinearLayout daySelectLl, monthSelectLl, yearSelectLl,
-            studyLl, sportLl, gameLl, loadingLl;
 
-    private TableRow avgDayScoreTvTr, avgDayScoreTr, stepTvTr, sumDayStepTr, distanceTvTr, sumDayDistanceTr,
-            avgMYScoreTvTr, avgMYScoreTr, mYStepTvTr, mYDistanceTvTr, mYStepTr, mYDistanceTr;
-    private ImageButton backDayBtn, nextDayBtn, backMonthBtn, nextMonthBtn, backYearBtn, nextYearBtn,
-            nextStTypeBtn, backStTypeBtn, nextSpTypeBtn, backSpTypeBtn;
+    private LinearLayout loadingLl;
+
+    private TableRow avgDayScoreTvTr, avgDayScoreTr, stepTvTr, sumDayStepTr, distanceTvTr, sumDayDistanceTr;
+    private ImageButton backDayBtn, nextDayBtn, nextStTypeBtn, backStTypeBtn, nextSpTypeBtn, backSpTypeBtn;
     private Button backBtn;
-    private TextView dayTv, monthTv, yearTv, stTypeTv, spTypeTv,
+    private TextView dayTv, stTypeTv, spTypeTv,
             sumStDayDurationTv, sumDayLessonTv, avgDayScoreTv,
-            sumStMYDurationTv, sumMYLessonTv, avgStMYDurationTv, avgMYLessonTv, avgMYScoreTv,
             sumSpDayDurationTv, sumDayStepTv, sumDayDistanceTv,
-            sumSpMYDurationTv, sumMYStepTv, sumMYDistanceTv,
-            avgSpMYDurationTv, avgMYStepTv, avgMYDistanceTv,
-            sumDayWinTv, sumDayLostTv, sumMYWinTv, sumMYLostTv, avgMYWinTv, avgMYLostTv;
+            sumDayWinTv, sumDayLostTv;
 
     private String userId, stType, spType;
     private List<String> listStType = Arrays.asList("Tiếng Anh", "Kiểm tra", "Tự học"),
@@ -71,27 +63,7 @@ public class SummaryActivity extends AppCompatActivity {
 
         activityLogRepository = new ActivityLogRepository();
 
-        dayRb = findViewById(R.id.day_rb);
-        monthRb = findViewById(R.id.month_rb);
-        yearRb = findViewById(R.id.year_rb);
-
-        daySelectLl = findViewById(R.id.day_select_ll);
-        monthSelectLl = findViewById(R.id.month_select_ll);
-        yearSelectLl = findViewById(R.id.year_select_ll);
-
-        studyLl = findViewById(R.id.study_ll);
-        sportLl = findViewById(R.id.sport_ll);
-        gameLl = findViewById(R.id.game_ll);
-
         loadingLl = findViewById(R.id.loading_ll);
-
-        dayStSumTl = findViewById(R.id.day_st_summary_tl);
-        daySpSumTl = findViewById(R.id.day_sp_summary_tl);
-        dayGSumTl = findViewById(R.id.day_g_summary_tl);
-
-        mYStSumTl = findViewById(R.id.m_y_st_summary_tl);
-        mYSpSumTl = findViewById(R.id.m_y_sp_summary_tl);
-        mYGSumTl = findViewById(R.id.m_y_g_summary_tl);
 
         avgDayScoreTvTr = findViewById(R.id.avg_day_score_tv_tr);
         avgDayScoreTr = findViewById(R.id.avg_day_score_tr);
@@ -102,23 +74,8 @@ public class SummaryActivity extends AppCompatActivity {
         distanceTvTr = findViewById(R.id.distance_tv_tr);
         sumDayDistanceTr = findViewById(R.id.sum_day_distance_tr);
 
-        avgMYScoreTvTr = findViewById(R.id.avg_m_y_score_tv_tr);
-        avgMYScoreTr = findViewById(R.id.avg_m_y_score_tr);
-
-        mYStepTvTr = findViewById(R.id.sum_m_y_step_tv_tr);
-        mYStepTr = findViewById(R.id.sum_m_y_step_tr);
-
-        mYDistanceTvTr = findViewById(R.id.sum_m_y_distance_tv_tr);
-        mYDistanceTr = findViewById(R.id.sum_m_y_distance_tr);
-
         backDayBtn = findViewById(R.id.back_day_btn);
         nextDayBtn = findViewById(R.id.next_day_btn);
-
-        backMonthBtn = findViewById(R.id.back_month_btn);
-        nextMonthBtn = findViewById(R.id.next_month_btn);
-
-        backYearBtn = findViewById(R.id.back_year_btn);
-        nextYearBtn = findViewById(R.id.next_year_btn);
 
         nextStTypeBtn = findViewById(R.id.next_st_type_btn);
         backStTypeBtn = findViewById(R.id.back_st_type_btn);
@@ -129,8 +86,6 @@ public class SummaryActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.back_btn);
 
         dayTv = findViewById(R.id.day_tv);
-        monthTv = findViewById(R.id.month_tv);
-        yearTv = findViewById(R.id.year_tv);
 
         stTypeTv = findViewById(R.id.st_type_tv);
         spTypeTv = findViewById(R.id.sp_type_tv);
@@ -139,32 +94,12 @@ public class SummaryActivity extends AppCompatActivity {
         sumDayLessonTv = findViewById(R.id.sum_day_lesson_tv);
         avgDayScoreTv = findViewById(R.id.avg_day_score_tv);
 
-        sumStMYDurationTv = findViewById(R.id.sum_st_m_y_duration_tv);
-        sumMYLessonTv = findViewById(R.id.sum_m_y_lesson_tv);
-        avgStMYDurationTv = findViewById(R.id.avg_st_m_y_duration_tv);
-        avgMYLessonTv = findViewById(R.id.avg_m_y_lesson_tv);
-        avgMYScoreTv = findViewById(R.id.avg_m_y_score_tv);
-
         sumSpDayDurationTv = findViewById(R.id.sum_sp_day_duration_tv);
         sumDayStepTv = findViewById(R.id.sum_day_step_tv);
         sumDayDistanceTv = findViewById(R.id.sum_day_distance_tv);
 
-        sumSpMYDurationTv = findViewById(R.id.sum_sp_m_y_duration_tv);
-        sumMYStepTv = findViewById(R.id.sum_m_y_step_tv);
-        sumMYDistanceTv = findViewById(R.id.sum_m_y_distance_tv);
-
-        avgSpMYDurationTv = findViewById(R.id.avg_sp_m_y_duration_tv);
-        avgMYStepTv = findViewById(R.id.avg_m_y_step_tv);
-        avgMYDistanceTv = findViewById(R.id.avg_m_y_distance_tv);
-
         sumDayWinTv = findViewById(R.id.sum_day_win_tv);
         sumDayLostTv = findViewById(R.id.sum_day_lost_tv);
-
-        sumMYWinTv = findViewById(R.id.sum_g_m_y_win_tv);
-        sumMYLostTv = findViewById(R.id.sum_g_m_y_lost_tv);
-
-        avgMYWinTv = findViewById(R.id.avg_g_m_y_win_tv);
-        avgMYLostTv = findViewById(R.id.avg_g_m_y_lost_tv);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         currentDate = new Date();

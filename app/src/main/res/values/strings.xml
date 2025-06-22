@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">UngDungNuoiThuAo</string>
+    <string name="guide">
+        Chào mừng bạn đến với ứng dụng nuôi thú ảo!
+        Hãy học tập, rèn luyện và sống tích cực mỗi ngày
+        để giữ cho thú cưng luôn khỏe mạnh và vui vẻ.
+        Bạn sẽ nhận được EXP, lên cấp và tích lũy xu (Coin)
+        sau mỗi hoạt động. Xu có thể dùng để mua vật phẩm
+        trong chế độ giải trí – nơi bạn và thú cưng có thể
+        thư giãn cùng nhau. Cùng cố gắng mỗi ngày để
+        nâng cao bản thân và chăm sóc thú thật tốt nhé!
+    </string>
 </resources>

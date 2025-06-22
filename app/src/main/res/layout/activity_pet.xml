@@ -38,7 +38,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
-                    android:text="Tên thú cưng"
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     android:textColor="#000000"
@@ -101,7 +100,7 @@
                                 android:layout_margin="0dp"
                                 android:layout_weight="1"
                                 android:max="100"
-                                android:progress="60"
+                                android:progress="10"
                                 android:progressDrawable="@drawable/intelligence_score_bar" />
 
                             <TextView
@@ -165,7 +164,7 @@
                                 android:layout_margin="0dp"
                                 android:layout_weight="1"
                                 android:max="100"
-                                android:progress="60"
+                                android:progress="10"
                                 android:progressDrawable="@drawable/physical_score_bar" />
 
                             <TextView
@@ -229,7 +228,7 @@
                                 android:layout_margin="0dp"
                                 android:layout_weight="1"
                                 android:max="100"
-                                android:progress="60"
+                                android:progress="10"
                                 android:progressDrawable="@drawable/spirit_score_bar" />
 
                             <TextView
@@ -293,7 +292,7 @@
                                 android:layout_margin="0dp"
                                 android:layout_weight="1"
                                 android:max="100"
-                                android:progress="60"
+                                android:progress="10"
                                 android:progressDrawable="@drawable/overall_score_bar" />
 
                             <TextView

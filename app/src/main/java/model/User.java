@@ -89,7 +89,7 @@ public class User {
     }
 
     public void userTest(int score) {
-        if (score >= 7) {
+        if (score > 6) {
             this.exp += score;
             this.coin += score;
         }
@@ -101,20 +101,20 @@ public class User {
     }
 
     public void userRun(int step) {
-        this.exp += (int) Math.round((float) step / 10);
-        this.coin += (int) Math.round((float) step / 10);
+        this.exp += (step / 100);
+        this.coin += (step / 100);
         gainLevel();
     }
 
     public void userBicycle(int distance) {
-        this.exp += (distance / 10) * 2;
-        this.coin += (distance / 10) * 2;
+        this.exp += (distance / 1000);
+        this.coin += (distance / 1000) ;
         gainLevel();
     }
 
     public void userTimePractice(int duration) {
-        this.exp += (int) Math.round((float) duration / 60);
-        this.coin += (int) Math.round((float) duration / 60);
+        this.exp += (duration / (60 * 30)) * 2;
+        this.coin += (duration / (60 * 30)) * 2;
         gainLevel();
     }
 

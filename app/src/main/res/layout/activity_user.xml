@@ -48,7 +48,6 @@
                             android:layout_height="match_parent"
                             android:layout_marginBottom="10dp"
                             android:gravity="center"
-                            android:text="Tên đăng nhập"
                             android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="#000000"
@@ -87,7 +86,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="5dp"
-                            android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -132,6 +130,17 @@
                             </FrameLayout>
 
                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/coin_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="Xu:"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                         <Button
                             android:id="@+id/edit_email_btn"

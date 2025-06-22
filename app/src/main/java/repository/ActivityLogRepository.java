@@ -74,7 +74,7 @@ public class ActivityLogRepository {
                 .addOnSuccessListener(documentSnapshots -> {
                     for (DocumentSnapshot documentSnapshot : documentSnapshots) {
                         String storedUId = documentSnapshot.getString("userid");
-                        if(storedUId.equals(userId)) {
+                        if (storedUId.equals(userId)) {
                             String datetime = documentSnapshot.getString("datetime");
                             Log.d("ActLogRepo", "UserID: " + storedUId + ", Datetime: " + datetime);
                             Log.d("ActLogRepo", "Get lastest actlog datetime success!");
@@ -91,8 +91,7 @@ public class ActivityLogRepository {
                 });
     }
 
-    public void getDayActlog(String userId, String date, String type, GetDayActLogCallback callback)
-    {
+    public void getDayActlog(String userId, String date, String type, GetDayActLogCallback callback) {
         db.collection("activitylog")
                 .whereEqualTo("userid", userId)
                 .whereEqualTo("date", date)
@@ -103,7 +102,7 @@ public class ActivityLogRepository {
 
                     int sumDistance = 0, sumStep = 0, sumDuration = 0, totalSeconds = 0, winCount = 0, lostCount = 0;
                     double sumScore = 0, size = documentSnapshots.size();
-                    for(DocumentSnapshot doc : documentSnapshots) {
+                    for (DocumentSnapshot doc : documentSnapshots) {
                         ActivityLog data = doc.toObject(ActivityLog.class);
                         actlogList.add(data);
                         Log.d("ActlogRepo", "data: " + data.getUserid() + " "
@@ -112,7 +111,7 @@ public class ActivityLogRepository {
                                 + data.getStep() + " " + data.getScore());
 
                         if (data.getType().equals("Giải trí")) {
-                            if (data.getScore() == 10)  winCount++;
+                            if (data.getScore() == 10) winCount++;
                             else lostCount++;
                         }
 
@@ -127,7 +126,10 @@ public class ActivityLogRepository {
                     int totalHours = totalSeconds / 3600;
                     int totalMinutes = (totalSeconds % 3600) / 60;
                     int totalSecs = totalSeconds % 60;
-                    double avgScore = sumScore / size;
+                    double avgScore = 0;
+                    if (size > 0) {
+                        avgScore = sumScore / size;
+                    }
                     String totalDuration = String.format("%02d:%02d:%02d", totalHours, totalMinutes, totalSecs);
 
                     Log.d("ActlogRepo", "SumDistance: " + String.valueOf(sumDistance));
@@ -164,7 +166,7 @@ public class ActivityLogRepository {
                     int totalSeconds = 0;
                     for (DocumentSnapshot documentSnapshot : documentSnapshots) {
                         String storedUId = documentSnapshot.getString("userid");
-                        if(storedUId.equals(userId)) {
+                        if (storedUId.equals(userId)) {
                             ActivityLog actLog = documentSnapshot.toObject(ActivityLog.class);
                             double duration = actLog.getDuration();
                             totalSeconds += (int) Math.round(duration);
@@ -183,10 +185,9 @@ public class ActivityLogRepository {
                             actLogMap.put("step", String.valueOf(actLog.getStep()));
                             actLogMap.put("score", String.valueOf(actLog.getScore()));
                             if (actLog.getType().equals("Giải trí")) {
-                                if (actLog.getScore() == 10)    actLogMap.put("result", "Thắng");
+                                if (actLog.getScore() == 10) actLogMap.put("result", "Thắng");
                                 else actLogMap.put("result", "Thua");
-                            }
-                            else actLogMap.put("result", "Rỗng");
+                            } else actLogMap.put("result", "Rỗng");
                             actLogList.add(actLogMap);
                         } else {
                             Log.d("ActLogRepo", "No data found!");

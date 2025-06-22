@@ -68,7 +68,9 @@ public class SettingActivity extends AppCompatActivity {
         aboutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent toAbout = new Intent(SettingActivity.this, AboutActivity.class);
+                toAbout.putExtra("userId", userId);
+                startActivity(toAbout);
             }
         });
 

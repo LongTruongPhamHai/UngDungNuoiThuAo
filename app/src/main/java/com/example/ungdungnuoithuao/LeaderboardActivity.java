@@ -101,7 +101,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                     listUserTr.get(i).setVisibility(View.VISIBLE);
                     loadTopUserInfo(topUser.get(i), usnameLv.get(i), lvlTv.get(i));
                     loadingLl.setVisibility(View.GONE);
-                    Toast.makeText(LeaderboardActivity.this, "Load leader board successful!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LeaderboardActivity.this, "Tải dữ liệu thành công!", Toast.LENGTH_SHORT).show();
                 }
                 if (userRank > 5) {
                     userTr.setVisibility(View.VISIBLE);
@@ -111,13 +111,13 @@ public class LeaderboardActivity extends AppCompatActivity {
                         public void onUserLoaded(User nUser) {
                             loadTopUserInfo(nUser, thisUsnameTv, thisUsLvlTv);
                             loadingLl.setVisibility(View.GONE);
-                            Toast.makeText(LeaderboardActivity.this, "Load leader board successful!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LeaderboardActivity.this, "Tải dữ liệu thành công!", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(Exception e) {
                             loadingLl.setVisibility(View.GONE);
-                            Toast.makeText(LeaderboardActivity.this, "Load leader board failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LeaderboardActivity.this, "Tải dữ liệu không thành công! Vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
                         }
                     });
                     if (userRank == 6) skipTr.setVisibility(View.GONE);
@@ -128,7 +128,7 @@ public class LeaderboardActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception exception) {
                 loadingLl.setVisibility(View.GONE);
-                Toast.makeText(LeaderboardActivity.this, "Load leader board failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LeaderboardActivity.this, "Tải dữ liệu không thành công! Vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
             }
         });
 
