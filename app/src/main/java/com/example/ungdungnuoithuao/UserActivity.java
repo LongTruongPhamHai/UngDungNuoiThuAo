@@ -30,7 +30,7 @@ import repository.callback.user.UserLoadedCallback;
 public class UserActivity extends AppCompatActivity {
 
     private String userId;
-    private TextView emailTv, usernameTv, levelTv, levelBarTv;
+    private TextView emailTv, usernameTv, levelTv, levelBarTv, coinTv;
     private EditText usernameEt;
     private ProgressBar levelBar;
     private LinearLayout loadingLl;
@@ -60,6 +60,7 @@ public class UserActivity extends AppCompatActivity {
         usernameTv = findViewById(R.id.username_tv);
         levelTv = findViewById(R.id.level_tv);
         levelBarTv = findViewById(R.id.level_bar_tv);
+        coinTv = findViewById(R.id.coin_tv);
 
         levelBar = findViewById(R.id.level_bar);
 
@@ -109,14 +110,14 @@ public class UserActivity extends AppCompatActivity {
                 userRepository.getUser(userId, new UserLoadedCallback() {
                     @Override
                     public void onUserLoaded(User nUser) {
-                        String mailContent = "Tên đăng nhập: " + nUser.getEmail() + ".\n"
-                                + "Email: " + nUser.getUsername() + ".\n"
+                        String mailContent = "Tên đăng nhập: " + nUser.getUsername() + ".\n"
+                                + "Email: " + nUser.getEmail() + ".\n"
                                 + "Yêu cầu: Thay đổi địa chỉ email.\n"
                                 + "Email mới (Nhập địa chỉ email mới tại đây):";
 
                         Intent toMail = new Intent(Intent.ACTION_SENDTO);
                         toMail.setData(Uri.parse("mailto:"));
-                        toMail.putExtra(Intent.EXTRA_EMAIL, new String[]{"longtruongphamhai@gmail.com"});
+                        toMail.putExtra(Intent.EXTRA_EMAIL, new String[]{"email@example.com"});
                         toMail.putExtra(Intent.EXTRA_SUBJECT, "Thay đổi địa chỉ email");
                         toMail.putExtra(Intent.EXTRA_TEXT, mailContent);
 
@@ -482,9 +483,10 @@ public class UserActivity extends AppCompatActivity {
                 emailTv.setText(nUser.getEmail());
                 usernameTv.setText(nUser.getUsername());
                 usernameEt.setText(nUser.getUsername());
-                levelTv.setText("Level: " + String.valueOf(nUser.getLevel()));
+                levelTv.setText("Cấp độ: " + String.valueOf(nUser.getLevel()));
                 levelBar.setProgress(nUser.getExp());
                 levelBarTv.setText(String.valueOf(nUser.getExp()));
+                coinTv.setText("Xu: " + String.valueOf(nUser.getCoin()));
                 loadingLl.setVisibility(View.GONE);
             }
 

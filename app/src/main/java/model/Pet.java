@@ -140,35 +140,35 @@ public class Pet implements Serializable {
     }
 
     public void petTest(int score) {
-        if (score >= 7) this.iqscore = Math.min(100, this.iqscore += score);
+        if (score > 6) this.iqscore = Math.min(100, this.iqscore += score);
         this.spiritscore = Math.min(100, this.spiritscore += (int) score / 4);
     }
 
     public void petSelfStudy(int duration) {
-        this.iqscore = Math.min(100, this.iqscore += (duration / 60));
-        this.spiritscore = Math.min(100, this.spiritscore += Math.min((duration / 60) * 2, 4));
+        this.iqscore = Math.min(100, this.iqscore += (duration / (60 * 30)));
+        this.spiritscore = Math.min(100, this.spiritscore += Math.min((duration / (60 * 30)), 2));
     }
 
     public void petRun(int step) {
-        this.iqscore = Math.min(100, this.iqscore += Math.min((step / 10), 2));
-        this.physicalscore = Math.min(100, this.physicalscore += (int) Math.round((float) step / 10));
-        this.spiritscore = Math.min(100, this.spiritscore += Math.min((step / 10) * 2, 4));
+        this.iqscore = Math.min(100, this.iqscore += Math.min((step / 100), 2));
+        this.physicalscore = Math.min(100, this.physicalscore += (int) Math.round((float) step / 100) * 2);
+        this.spiritscore = Math.min(100, this.spiritscore += Math.min((step / 100), 2));
     }
 
     public void petBicycle(int distance) {
-        this.iqscore = Math.min(100, this.iqscore += Math.min((distance / 10), 2));
-        this.physicalscore = Math.min(100, this.physicalscore += Math.round((float) distance / 10) * 2);
-        this.spiritscore = Math.min(100, this.spiritscore += Math.min((distance / 10) * 2, 4));
+        this.iqscore = Math.min(100, this.iqscore += Math.min((distance / 1000), 2));
+        this.physicalscore = Math.min(100, this.physicalscore += Math.round((float) distance / 1000) * 2);
+        this.spiritscore = Math.min(100, this.spiritscore += Math.min((distance / 1000), 2));
     }
 
     public void petYoga(int duration) {
-        this.iqscore = Math.min(100, this.iqscore += Math.min((duration / 60), 2));
-        this.physicalscore = Math.min(100, this.physicalscore += (int) Math.round((float) duration / 60));
-        this.spiritscore = Math.min(100, this.spiritscore += Math.min((duration / 60) * 2, 4));
+        this.iqscore = Math.min(100, this.iqscore += Math.min((duration / (60 * 30)), 2));
+        this.physicalscore = Math.min(100, this.physicalscore += (int) Math.round((float) duration / (60 * 30)));
+        this.spiritscore = Math.min(100, this.spiritscore += Math.min((duration / (60 * 30)), 2));
     }
 
     public void petPlayGame(int score) {
-        this.iqscore = Math.min(100, this.iqscore += (score / 4));
+        this.iqscore = Math.min(100, this.iqscore += (score / 5));
         this.spiritscore = Math.min(100, this.spiritscore += score);
     }
 

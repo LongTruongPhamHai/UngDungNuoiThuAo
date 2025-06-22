@@ -266,7 +266,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onUserLoaded(User nUser) {
                 nUser.gainLevel();
                 usernameTv.setText(nUser.getUsername());
-                levelTv.setText("Level " + String.valueOf(nUser.getLevel()));
+                levelTv.setText("Cấp độ: " + String.valueOf(nUser.getLevel()));
                 levelBar.setProgress(nUser.getExp());
                 coinTv.setText("Xu: " + String.valueOf(nUser.getCoin()));
                 loadingLl.setVisibility(View.GONE);
