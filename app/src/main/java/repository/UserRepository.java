@@ -53,6 +53,7 @@ public class UserRepository {
                                         data.put("password", hashedPassword);
                                         data.put("exp", 0);
                                         data.put("level", 1);
+                                        data.put("coin", 50);
 
                                         db.collection("user").add(data)
                                                 .addOnSuccessListener(documentReference -> {
@@ -258,6 +259,7 @@ public class UserRepository {
                     Map<String, Object> data = new HashMap<>();
                     data.put("exp", user.getExp());
                     data.put("level", user.getLevel());
+                    data.put("coin", user.getCoin());
 
                     db.collection("user").document(userId).update(data)
                             .addOnSuccessListener(v -> {
@@ -283,7 +285,7 @@ public class UserRepository {
 
                     if (BCrypt.checkpw(password, storedPw)) {
                         db.collection("user").document(userId)
-                                .update("exp", 0, "level", 1)
+                                .update("exp", 0, "level", 1, "coin", 50)
                                 .addOnSuccessListener(v -> {
                                     Log.d("UserRepo", "Reset user success!");
                                     callback.onSuccess();

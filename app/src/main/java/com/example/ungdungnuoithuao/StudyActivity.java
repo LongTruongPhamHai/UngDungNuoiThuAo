@@ -63,7 +63,7 @@ public class StudyActivity extends AppCompatActivity {
                 ActivityLogRepository activityLogRepository = new ActivityLogRepository();
 
                 String type = "Tiếng Anh";
-                int score = 0, duration = 0, distance = 0, step = 0;
+                int score = 0, duration = 600, distance = 0, step = 0;
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String addDate = dateFormat.format(new Date());
 
@@ -161,7 +161,7 @@ public class StudyActivity extends AppCompatActivity {
                 ActivityLogRepository activityLogRepository = new ActivityLogRepository();
 
                 String type = "Kiểm tra";
-                int score = (int) (Math.random() * 11), duration = 0, distance = 0, step = 0;
+                int score = (int) (Math.random() * 11), duration = 60 * 5, distance = 0, step = 0;
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String addDate = dateFormat.format(new Date());
