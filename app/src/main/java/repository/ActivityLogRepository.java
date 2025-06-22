@@ -90,7 +90,8 @@ public class ActivityLogRepository {
                 });
     }
 
-    public void getDayActlog(String userId, String date, String type, GetDayActLogCallback callback) {
+    public void getDayActlog(String userId, String date, String type, GetDayActLogCallback callback)
+    {
         db.collection("activitylog")
                 .whereEqualTo("userid", userId)
                 .whereEqualTo("date", date)
@@ -98,7 +99,6 @@ public class ActivityLogRepository {
                 .addOnSuccessListener(documentSnapshots -> {
                     Log.d("ActlogRepo", "Get actlog list success!");
                     List<ActivityLog> actlogList = new ArrayList<>();
-                    ActivityLog sumData = new ActivityLog();
 
                     int sumDistance = 0, sumStep = 0, sumDuration = 0, totalSeconds = 0;
                     for(DocumentSnapshot doc : documentSnapshots) {

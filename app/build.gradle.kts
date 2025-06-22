@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.ungdungnuoithuao"
-        minSdk = 28
+        minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
