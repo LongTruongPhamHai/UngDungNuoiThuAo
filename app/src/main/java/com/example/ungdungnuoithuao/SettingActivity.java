@@ -29,10 +29,11 @@ public class SettingActivity extends AppCompatActivity {
             return insets;
         });
 
-        Button userBtn, petBtn, aboutBtn, logoutBtn, backBtn;
+        Button userBtn, petBtn, historyBtn, aboutBtn, logoutBtn, backBtn;
 
         userBtn = findViewById(R.id.user_btn);
         petBtn = findViewById(R.id.pet_btn);
+        historyBtn = findViewById(R.id.history_btn);
         aboutBtn = findViewById(R.id.about_btn);
         logoutBtn = findViewById(R.id.logout_btn);
         backBtn = findViewById(R.id.back_btn);
@@ -52,6 +53,15 @@ public class SettingActivity extends AppCompatActivity {
                 Intent toPet = new Intent(SettingActivity.this, PetActivity.class);
                 toPet.putExtra("userId", userId);
                 startActivity(toPet);
+            }
+        });
+
+        historyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toHistory = new Intent(SettingActivity.this, HistoryActivity.class);
+                toHistory.putExtra("userId", userId);
+                startActivity(toHistory);
             }
         });
 

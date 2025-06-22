@@ -26,7 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import repository.ActivityLogRepository;
-import repository.callback.activitylog.GetListActLogCallback;
+import repository.callback.activitylog.GetDayActLogCallback;
 
 public class SummaryActivity extends AppCompatActivity {
     private RadioButton dayRb, monthRb, yearRb;
@@ -291,7 +291,7 @@ public class SummaryActivity extends AppCompatActivity {
     private void loadStTextView(String userId, String date, String type) {
         loadingLl.setVisibility(View.VISIBLE);
         int result = 0;
-        activityLogRepository.getDayActlog(userId, date, type, new GetListActLogCallback() {
+        activityLogRepository.getDayActlog(userId, date, type, new GetDayActLogCallback() {
             @Override
             public void onSuccess(Map<String, Object> sumDataList) {
                 sumStDayDurationTv.setText(sumDataList.get("sumduration").toString());
@@ -319,7 +319,7 @@ public class SummaryActivity extends AppCompatActivity {
 
     private void loadSpTextView(String userId, String date, String type) {
         loadingLl.setVisibility(View.VISIBLE);
-        activityLogRepository.getDayActlog(userId, date, type, new GetListActLogCallback() {
+        activityLogRepository.getDayActlog(userId, date, type, new GetDayActLogCallback() {
             @Override
             public void onSuccess(Map<String, Object> sumDataList) {
                 sumSpDayDurationTv.setText(sumDataList.get("sumduration").toString());
@@ -355,7 +355,7 @@ public class SummaryActivity extends AppCompatActivity {
 
     public void loadGameTextView(String userId, String date, String type) {
         loadingLl.setVisibility(View.VISIBLE);
-        activityLogRepository.getDayActlog(userId, date, type, new GetListActLogCallback() {
+        activityLogRepository.getDayActlog(userId, date, type, new GetDayActLogCallback() {
             @Override
             public void onSuccess(Map<String, Object> sumDataList) {
                 sumDayWinTv.setText(sumDataList.get("wincount").toString());

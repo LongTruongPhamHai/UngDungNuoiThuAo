@@ -220,6 +220,12 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                             stepLl.setVisibility(View.GONE);
                             break;
                     }
+                    time = 0;
+                    distance = 0;
+                    step = 0;
+                    score = 0;
+                    displayedSteps = 0;
+                    initialStep = -1;
                     timerStarted = true;
                     startTimer();
                     startCountStep();
@@ -422,6 +428,8 @@ public class SportActivity extends AppCompatActivity implements SensorEventListe
                 headerTv.setText("Thể thao");
                 back2Btn.setVisibility(View.GONE);
                 startLl.setVisibility(View.GONE);
+                actOnLl.setVisibility(View.VISIBLE);
+                actEndLl.setVisibility(View.GONE);
                 startBtn.setVisibility(View.VISIBLE);
                 selectLl.setVisibility(View.VISIBLE);
                 backBtn.setVisibility(View.VISIBLE);
