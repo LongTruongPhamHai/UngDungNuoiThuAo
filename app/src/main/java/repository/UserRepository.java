@@ -440,41 +440,6 @@ public class UserRepository {
                 break;
         }
     }
-
-//    public void checkOfflineTime(String userId) {
-//        activityLogRepository = new ActivityLogRepository();
-//        activityLogRepository.getLastActLogDateTime(userId, new GetLastActLogDateTimeCallback() {
-//            @Override
-//            public void onSuccess(String datetime) {
-//                try {
-//                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//                    Date oldDate = format.parse(datetime);
-//
-//                    Date now = new Date();
-//
-//                    long diffInMillis = now.getTime() - oldDate.getTime();
-//
-//                    if (diffInMillis > 24 * 60 * 60 * 1000) {
-//                        Log.d("UserRepo", "Quá 24 giờ");
-//                        Log.d("UserRepo", "UserId: " + userId);
-//                        petRepository.petOffline(userId);
-//                    } else {
-//                        Log.d("UserRepo", "Chưa 24 giờ");
-//                    }
-//
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                    Log.d("UserRepo", "Lỗi parse");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Exception e) {
-//                Log.d("UserRepo", "Lỗi " + e.toString());
-//            }
-//        });
-//
-//    }
 }
 
 
