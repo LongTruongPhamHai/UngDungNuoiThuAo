@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Cài đặt"
+                    android:text="Học tập"
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     android:textColor="#000000"
@@ -55,6 +55,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/toggleDNDButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#f1b15a"
+                        android:text="Bật/tắt Không Làm Phiền"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:strokeColor="@color/black"
+                        app:strokeWidth="1dp" />
 
                     <Button
                         android:id="@+id/english_btn"

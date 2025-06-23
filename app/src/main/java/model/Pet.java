@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Pet implements Serializable {
 
     private String petid, userid, petname,
-            attack, def, attbuffskillid, buffskillid, defskillid, hp, mana, id;
+            attack, def, att_skill_ids, buff_skill_ids, def_skill_ids, hp, mana, id, potential_point;
     private int iqscore, physicalscore, spiritscore, overallscore;
 
     public Pet() {}
@@ -19,12 +19,13 @@ public class Pet implements Serializable {
         this.overallscore = 50;
         this.attack = "10";
         this.def = "10";
-        this.attbuffskillid = "1";
-        this.buffskillid = "1";
-        this.defskillid = "1";
-        this.hp = "1";
-        this.mana = "1";
+        this.att_skill_ids = "1";
+        this.buff_skill_ids = "1";
+        this.def_skill_ids = "1";
+        this.hp = "40";
+        this.mana = "40";
         this.id = "1";
+        this.potential_point = "1";
         this.userid = userid;
     }
 
@@ -141,6 +142,78 @@ public class Pet implements Serializable {
         else if (overallscore < 60) return "#5D4037";
         else if (overallscore < 85) return "#00838F";
         else return "#E91E63";
+    }
+
+    public String getAttack() {
+        return attack;
+    }
+
+    public void setAttack(String attack) {
+        this.attack = attack;
+    }
+
+    public String getDef() {
+        return def;
+    }
+
+    public void setDef(String def) {
+        this.def = def;
+    }
+
+    public String getAtt_skill_ids() {
+        return att_skill_ids;
+    }
+
+    public void setAtt_skill_ids(String att_skill_ids) {
+        this.att_skill_ids = att_skill_ids;
+    }
+
+    public String getBuff_skill_ids() {
+        return buff_skill_ids;
+    }
+
+    public void setBuff_skill_ids(String buff_skill_ids) {
+        this.buff_skill_ids = buff_skill_ids;
+    }
+
+    public String getDef_skill_ids() {
+        return def_skill_ids;
+    }
+
+    public void setDef_skill_ids(String def_skill_ids) {
+        this.def_skill_ids = def_skill_ids;
+    }
+
+    public String getPotential_point() {
+        return potential_point;
+    }
+
+    public void setPotential_point(String potential_point) {
+        this.potential_point = potential_point;
+    }
+
+    public String getHp() {
+        return hp;
+    }
+
+    public void setHp(String hp) {
+        this.hp = hp;
+    }
+
+    public String getMana() {
+        return mana;
+    }
+
+    public void setMana(String mana) {
+        this.mana = mana;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void petEnglish() {

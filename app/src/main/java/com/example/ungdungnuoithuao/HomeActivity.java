@@ -127,92 +127,96 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Intent đến gameActivity
 
+                Intent toGame = new Intent(HomeActivity.this, GameActivity.class);
+                toGame.putExtra("userId", userId);
+                startActivity(toGame);
+
                 // Test tăng chỉ số (Tạm thời)
-                String type = "Giải trí";
-                int score = Math.random() < 0.5 ? 0 : 10, duration = 60 * 5, distance = 0, step = 0;;
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                String addDate = dateFormat.format(new Date());
-
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-                String addTime = timeFormat.format(new Date());
-
-                SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                String datetime = fullFormat.format(new Date());
-
-                userRepository.getUser(userId, new UserLoadedCallback() {
-                    @Override
-                    public void onUserLoaded(User nUser) {
-                        userRepository.trainingUser(nUser, type, score);
-                        userRepository.updateUserStat(userId, nUser, new UpdateUserCallback() {
-                            @Override
-                            public void onSuccess() {
-                                Log.d("HomeAct", "Update user stat success!");
-                            }
-
-                            @Override
-                            public void onFailure(Exception e) {
-                                Log.d("HomeAct", "Update user stat failed!");
-                            }
-
-                            @Override
-                            public void onIncorrectPw() {
-                                Log.d("HomeAct", "Update user stat failed!");
-                            }
-
-                            @Override
-                            public void onUsernameTaken() {
-                                Log.d("HomeAct", "Update user stat failed!");
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        Log.d("HomeAct", "Get user stat failed!");
-                    }
-                });
-
-                petRepository.getPet(userId, new PetLoadedCallback() {
-                    @Override
-                    public void onPetLoaded(Pet nPet) {
-                        petRepository.trainingPet(nPet, type, score);
-                        petRepository.updatePetStat(userId, nPet, new UpdatePetCallback() {
-                            @Override
-                            public void onSuccess() {
-                                Log.d("StudyAct", "Update pet stat success!");
-                            }
-
-                            @Override
-                            public void onFailure(Exception e) {
-                                Log.d("StudyAct", "Update pet stat failed!");
-                            }
-
-                            @Override
-                            public void onIncorrectPassword() {
-                                Log.d("StudyAct", "Update pet stat failed!");
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Exception errorMessage) {
-                        Log.d("StudyAct", "Load pet failed!");
-                    }
-                });
-
-                activityLogRepository.addActlog(userId, datetime, addDate, addTime, type, duration, distance, step, score, new AddActLogCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d("HomeAct", "Add act log success!");
-                        Toast.makeText(HomeActivity.this, "Thêm dữ liệu thành công!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        Toast.makeText(HomeActivity.this, "Thêm dữ liệu thất bại!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                String type = "Giải trí";
+//                int score = Math.random() < 0.5 ? 0 : 10, duration = 60 * 5, distance = 0, step = 0;;
+//
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+//                String addDate = dateFormat.format(new Date());
+//
+//                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+//                String addTime = timeFormat.format(new Date());
+//
+//                SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//                String datetime = fullFormat.format(new Date());
+//
+//                userRepository.getUser(userId, new UserLoadedCallback() {
+//                    @Override
+//                    public void onUserLoaded(User nUser) {
+//                        userRepository.trainingUser(nUser, type, score);
+//                        userRepository.updateUserStat(userId, nUser, new UpdateUserCallback() {
+//                            @Override
+//                            public void onSuccess() {
+//                                Log.d("HomeAct", "Update user stat success!");
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Exception e) {
+//                                Log.d("HomeAct", "Update user stat failed!");
+//                            }
+//
+//                            @Override
+//                            public void onIncorrectPw() {
+//                                Log.d("HomeAct", "Update user stat failed!");
+//                            }
+//
+//                            @Override
+//                            public void onUsernameTaken() {
+//                                Log.d("HomeAct", "Update user stat failed!");
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Exception e) {
+//                        Log.d("HomeAct", "Get user stat failed!");
+//                    }
+//                });
+//
+//                petRepository.getPet(userId, new PetLoadedCallback() {
+//                    @Override
+//                    public void onPetLoaded(Pet nPet) {
+//                        petRepository.trainingPet(nPet, type, score);
+//                        petRepository.updatePetStat(userId, nPet, new UpdatePetCallback() {
+//                            @Override
+//                            public void onSuccess() {
+//                                Log.d("StudyAct", "Update pet stat success!");
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Exception e) {
+//                                Log.d("StudyAct", "Update pet stat failed!");
+//                            }
+//
+//                            @Override
+//                            public void onIncorrectPassword() {
+//                                Log.d("StudyAct", "Update pet stat failed!");
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Exception errorMessage) {
+//                        Log.d("StudyAct", "Load pet failed!");
+//                    }
+//                });
+//
+//                activityLogRepository.addActlog(userId, datetime, addDate, addTime, type, duration, distance, step, score, new AddActLogCallback() {
+//                    @Override
+//                    public void onSuccess() {
+//                        Log.d("HomeAct", "Add act log success!");
+//                        Toast.makeText(HomeActivity.this, "Thêm dữ liệu thành công!", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Exception e) {
+//                        Toast.makeText(HomeActivity.this, "Thêm dữ liệu thất bại!", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
             }
         });
 
