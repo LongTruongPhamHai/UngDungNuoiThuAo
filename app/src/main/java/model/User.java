@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Random;
 
 public class User {
     private String userid;
@@ -120,8 +121,11 @@ public class User {
 
     public void userPlayGame(int score) {
         // Win = 10; Loss = 0;
-        this.exp += score;
-        this.coin += score;
+        Random random = new Random();
+        if (score == 10) {
+            this.exp += random.nextInt(41) + 40;
+            this.coin += random.nextInt(31) + 20;
+        }
         gainLevel();
     }
 }

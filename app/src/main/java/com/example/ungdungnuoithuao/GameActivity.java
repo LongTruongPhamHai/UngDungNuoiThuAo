@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,6 +33,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView txtMyTen; // Khai báo TextView cho tên (sẽ là tên pet)
     //    private final int[] imageArrayTam = {R.drawable.tam1, R.drawable.tam2, R.drawable.tam3,
 //            R.drawable.tam4};
+    private ImageButton backBtn;
     private final int[] imageArrayAn = {R.drawable.an1, R.drawable.an2,
             R.drawable.an3, R.drawable.an4};
 
@@ -68,11 +71,17 @@ public class GameActivity extends AppCompatActivity {
         receivedUserId = getIntent().getStringExtra("userId");
 
 
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//            )};
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-            )};
+        });
 
         if (receivedUserId == null || receivedUserId.isEmpty()) {
             Log.e("GameActivity", "Error: userId not received from HomeActivity!");
@@ -83,6 +92,14 @@ public class GameActivity extends AppCompatActivity {
             loadUserStats(receivedUserId); // Tải EXP và Level của người dùng
             loadPetName(receivedUserId); // Tải tên pet
         }
+
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         txtMyLv = findViewById(R.id.txtMyLv);
         txtMyTen = findViewById(R.id.txtMyTen); // Ánh xạ TextView cho tên pet
@@ -166,7 +183,7 @@ public class GameActivity extends AppCompatActivity {
                         Intent myintent = new Intent(GameActivity.this, MapActivity.class);
                         myintent.putExtra("userId", receivedUserId);
                         Log.d("GameActivity", "Passing userId to MapActivity: " + receivedUserId);
-                        GameActivity.this.startActivity(myintent);
+                        startActivity(myintent);
                     }
                 }, 100);
                 isDaAnNut = false;

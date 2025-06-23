@@ -40,7 +40,15 @@ public class PetRepository {
         pet.put("iqscore", newPet.getIqscore());
         pet.put("physicalscore", newPet.getPhysicalscore());
         pet.put("spiritscore", newPet.getSpiritscore());
-//        pet.put("")
+        pet.put("attack", newPet.getAttack());
+        pet.put("def", newPet.getDef());
+        pet.put("att_skill_ids", newPet.getAtt_skill_ids());
+        pet.put("buff_skill_ids", newPet.getBuff_skill_ids());
+        pet.put("def_skill_ids", newPet.getDef_skill_ids());
+        pet.put("hp", newPet.getHp());
+        pet.put("mana", newPet.getMana());
+        pet.put("id", newPet.getId());
+        pet.put("potential_point", newPet.getPotential_point());
         pet.put("userid", newPet.getUserid());
 
         db.collection("pet")
@@ -151,6 +159,15 @@ public class PetRepository {
                     data.put("iqscore", 50);
                     data.put("physicalscore", 50);
                     data.put("spiritscore", 50);
+                    data.put("attack", "10");
+                    data.put("def", "10");
+                    data.put("att_skill_ids", "1");
+                    data.put("buff_skill_ids", "1");
+                    data.put("def_skill_ids", "1");
+                    data.put("hp", "40");
+                    data.put("mana", "40");
+                    data.put("id", "1");
+                    data.put("potential_point", "1");
 
                     db.collection("pet").document(petId).update(data)
                             .addOnSuccessListener(v -> {
