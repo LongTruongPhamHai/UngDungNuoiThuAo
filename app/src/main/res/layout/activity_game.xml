@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/abg2"
+    tools:context=".huy.MainActivity2">
+
+    <TextView
+        android:id="@+id/txtTen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/pixel2"
+        android:text="Tên:"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.086"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtLv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/pixel2"
+        android:text="Level:"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtMyLv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/pixel2"
+        android:text="1"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.298"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtMyTen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/pixel2"
+        android:text="Gà nhỏ"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.397"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="192dp"
+        android:elevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <FrameLayout
+        android:id="@+id/btnShop"
+        android:layout_width="172dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="488dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewBtnShop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/button"
+            android:contentDescription="Nút Tắm" /> <!-- Đã thêm -->
+
+        <TextView
+            android:id="@+id/btnShopText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/pixel2"
+            android:gravity="center"
+            android:text="Shop"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btnAn"
+        android:layout_width="172dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="488dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewBtnAn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/button"
+            android:contentDescription="Nút Ăn" /> <!-- Đã thêm -->
+
+        <TextView
+            android:id="@+id/btnAnText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pixel2"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:text="Ăn"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btnChiSo"
+        android:layout_width="172dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="588dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewBtnChiSo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/button"/>
+
+        <TextView
+            android:id="@+id/btnChiSoText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pixel2"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:text="Chỉ Số"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btnChienDau"
+        android:layout_width="172dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="588dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewBtnChienDau"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/button"
+            android:contentDescription="Nút Ăn" /> <!-- Đã thêm -->
+
+        <TextView
+            android:id="@+id/btnChienDauText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pixel2"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:text="Chiến Đấu"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
+    </FrameLayout>
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="156dp"
+        android:elevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="156dp"
+        android:elevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/abg3"
+        tools:srcCompat="@tools:sample/avatars" />
+
+
+
+
+
+    <ProgressBar
+        android:id="@+id/thanhEXP"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="374dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="120dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

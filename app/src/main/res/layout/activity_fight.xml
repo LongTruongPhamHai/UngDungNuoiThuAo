@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".FightActivity">
+
+        <ImageView
+            android:id="@+id/ivBgBattel"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:elevation="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_battle2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/vitriMonster"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="70dp"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="@+id/ivBgBattel"
+            app:layout_constraintTop_toTopOf="@+id/ivBgBattel">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/ivMonsterImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:elevation="2dp"
+                    android:scaleType="fitCenter"
+                    tools:srcCompat="@tools:sample/avatars" />
+                <TextView
+                    android:id="@+id/txtMonsterName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/pixel2"
+                    android:padding="2dp"
+                    android:text="Tên Quái Địch"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    android:elevation="3dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/vitriMyMonster"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="180dp"
+            android:elevation="2dp"
+            app:layout_constraintStart_toStartOf="@+id/ivBgBattel"
+            app:layout_constraintTop_toTopOf="@+id/ivBgBattel">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/ivMyMonsterImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:elevation="2dp"
+                    android:scaleType="fitCenter"
+                    tools:srcCompat="@tools:sample/avatars" />
+                <TextView
+                    android:id="@+id/txtMyMonsterName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/pixel2"
+                    android:padding="2dp"
+                    android:text="Tên Quái Của Bạn"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    android:elevation="3dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <ScrollView
+            android:id="@+id/sv_battle_log"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="#B3000000"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivBgBattel">
+            <TextView
+                android:id="@+id/tv_battle_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pixel2"
+                android:padding="8dp"
+                android:text="Nhật ký trận đấu:\n"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/rv_player_skill_cards"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:id="@+id/thongtinMonsterName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="Tên: "
+                android:textSize="20sp"
+                android:elevation="3dp" />
+            <TextView
+                android:id="@+id/txtMonsterHP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="HP: "
+                android:textSize="20sp"
+                android:elevation="3dp" />
+            <TextView
+                android:id="@+id/txtMonsterMana"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="Mana: "
+                android:textSize="20sp"
+                android:elevation="3dp" />
+            <TextView
+                android:id="@+id/txtMonsterAttack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="Tấn công: "
+                android:textSize="20sp"
+                android:elevation="3dp" />
+            <TextView
+                android:id="@+id/txtMonsterDef"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="Phòng thủ: "
+                android:textSize="20sp"
+                android:elevation="3dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_end_turn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/pixel2"
+            android:text="Kết Thúc Lượt"
+            app:layout_constraintBottom_toTopOf="@+id/rv_player_skill_cards"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_player_skill_cards"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="#80000000"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_skill_card" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class Pet implements Serializable {
 
-    private String petid, userid, petname;
+    private String petid, userid, petname,
+            attack, def, attbuffskillid, buffskillid, defskillid, hp, mana, id;
     private int iqscore, physicalscore, spiritscore, overallscore;
 
     public Pet() {}
@@ -16,6 +17,14 @@ public class Pet implements Serializable {
         this.physicalscore = 50;
         this.spiritscore = 50;
         this.overallscore = 50;
+        this.attack = "10";
+        this.def = "10";
+        this.attbuffskillid = "1";
+        this.buffskillid = "1";
+        this.defskillid = "1";
+        this.hp = "1";
+        this.mana = "1";
+        this.id = "1";
         this.userid = userid;
     }
 

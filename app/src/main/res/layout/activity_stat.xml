@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StatActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="192dp"
+        android:elevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="156dp"
+        android:elevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="156dp"
+        android:elevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/abg3"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/imageView3"
+        tools:layout_editor_absoluteX="20dp">
+
+        <TextView
+            android:id="@+id/thongtinMyMonsterName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="3dp"
+            android:fontFamily="@font/pixel2"
+            android:gravity="start"
+            android:padding="2dp"
+            android:text="Tên: "
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtMyMonsterLv"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:elevation="3dp"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="Lv: "
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txtDiemTiemNang"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:elevation="3dp"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="Điểm tiềm năng: "
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtMyMonsterHP"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+
+                android:elevation="3dp"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:text="HP: "
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnCongHP"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
+                android:text="+" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtMyMonsterMana"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:elevation="3dp"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="Mana: "
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnMana"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
+                android:text="+" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtMyMonsterAttack"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:elevation="3dp"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="Tấn công: "
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnAttack"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
+                android:text="+" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtMyMonsterDef"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:elevation="3dp"
+                android:fontFamily="@font/pixel2"
+                android:gravity="start"
+                android:padding="2dp"
+                android:text="Phòng thủ: "
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnDef"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
+                android:text="+" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+    <ProgressBar
+        android:id="@+id/thanhEXP"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="374dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="120dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnHoanTra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hoàn trả điểm tiềm năng"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <Button
+        android:id="@+id/btnMasterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Master Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnHoanTra" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
