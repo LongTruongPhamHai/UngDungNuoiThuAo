@@ -85,6 +85,20 @@
                         app:strokeWidth="1dp" />
 
                     <Button
+                        android:id="@+id/dictionary_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#f1b15a"
+                        android:padding="5dp"
+                        android:text="Tra từ điển"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:strokeColor="@color/black"
+                        app:strokeWidth="1dp" />
+
+                    <Button
                         android:id="@+id/free_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

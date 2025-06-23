@@ -40,6 +40,7 @@ public class PetRepository {
         pet.put("iqscore", newPet.getIqscore());
         pet.put("physicalscore", newPet.getPhysicalscore());
         pet.put("spiritscore", newPet.getSpiritscore());
+//        pet.put("")
         pet.put("userid", newPet.getUserid());
 
         db.collection("pet")
