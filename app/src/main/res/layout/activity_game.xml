@@ -8,89 +8,57 @@
     android:background="@drawable/abg2"
     tools:context=".GameActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/txtTen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/pixel2"
+        android:text="Tên:"
+        android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+    <TextView
+        android:id="@+id/txtLv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/pixel2"
+        android:text="Level:"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:orientation="vertical"
-                android:padding="20dp">
+    <TextView
+        android:id="@+id/txtMyLv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/pixel2"
+        android:text="1"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.298"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txtTen"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/pixel2"
-                        android:text="Tên:"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/txtMyLv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/pixel2"
-                        android:text="1"
-                        android:textSize="20sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txtLv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/pixel2"
-                        android:text="Level:"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/txtMyTen"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/pixel2"
-                        android:text="Gà nhỏ"
-                        android:textSize="20sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/back_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#00FFFFFF"
-                    android:src="@drawable/xbutton" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/txtMyTen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/pixel2"
+        android:text="Gà nhỏ"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.397"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
@@ -110,8 +78,8 @@
         android:id="@+id/btnShop"
         android:layout_width="172dp"
         android:layout_height="92dp"
-        android:layout_marginTop="488dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="488dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -119,8 +87,8 @@
             android:id="@+id/imageViewBtnShop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/button"
-            android:contentDescription="Nút Tắm" /> <!-- Đã thêm -->
+            android:contentDescription="Nút Tắm"
+            android:src="@drawable/button" /> <!-- Đã thêm -->
 
         <TextView
             android:id="@+id/btnShopText"
@@ -135,7 +103,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/btnAn"
+        android:id="@+id/btnTuiDo"
         android:layout_width="172dp"
         android:layout_height="92dp"
         android:layout_marginTop="488dp"
@@ -144,20 +112,20 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageViewBtnAn"
+            android:id="@+id/imageViewBtnTuiDo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/button"
-            android:contentDescription="Nút Ăn" /> <!-- Đã thêm -->
+            android:contentDescription="Nút Ăn"
+            android:src="@drawable/button" /> <!-- Đã thêm -->
 
         <TextView
-            android:id="@+id/btnAnText"
+            android:id="@+id/btnTuiDoText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/pixel2"
             android:layout_marginBottom="20dp"
+            android:fontFamily="@font/pixel2"
             android:gravity="center"
-            android:text="Ăn"
+            android:text="Túi dồ"
             android:textColor="#FFFFFF"
             android:textSize="32sp" />
     </FrameLayout>
@@ -166,8 +134,8 @@
         android:id="@+id/btnChiSo"
         android:layout_width="172dp"
         android:layout_height="92dp"
-        android:layout_marginTop="588dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="588dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -175,14 +143,14 @@
             android:id="@+id/imageViewBtnChiSo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/button"/>
+            android:src="@drawable/button" />
 
         <TextView
             android:id="@+id/btnChiSoText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/pixel2"
             android:layout_marginBottom="20dp"
+            android:fontFamily="@font/pixel2"
             android:gravity="center"
             android:text="Chỉ Số"
             android:textColor="#FFFFFF"
@@ -202,15 +170,15 @@
             android:id="@+id/imageViewBtnChienDau"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/button"
-            android:contentDescription="Nút Ăn" /> <!-- Đã thêm -->
+            android:contentDescription="Nút Ăn"
+            android:src="@drawable/button" /> <!-- Đã thêm -->
 
         <TextView
             android:id="@+id/btnChienDauText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/pixel2"
             android:layout_marginBottom="20dp"
+            android:fontFamily="@font/pixel2"
             android:gravity="center"
             android:text="Chiến Đấu"
             android:textColor="#FFFFFF"
@@ -234,15 +202,12 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="156dp"
+        android:background="@drawable/dragon"
         android:elevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/abg3"
         tools:srcCompat="@tools:sample/avatars" />
-
-
-
 
 
     <ProgressBar

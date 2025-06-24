@@ -17,14 +17,13 @@ import model.SkillCard;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "monster.db";
-    private static final int DB_VERSION = 19; // Đảm bảo version khớp với phiên bản anh dùng
+    private static final int DB_VERSION = 26; // Tăng version khi thay đổi dữ liệu bảng Items
 
-    private Context context; // Thêm biến context để lưu Context
+    private Context context;
 
-    // Constructor: Nhận Context và lưu lại
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        this.context = context; // Lưu Context được truyền vào
+        this.context = context;
     }
 
     @Override
@@ -38,13 +37,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 "mana INTEGER," +
                 "attack INTEGER," +
                 "defense INTEGER," +
-                "atk_skill_ids TEXT," + // Thêm cột để lưu ID các skill tấn công của quái vật (dạng "1,2,3")
-                "def_skill_ids TEXT," + // Thêm cột để lưu ID các skill phòng thủ của quái vật
-                "buff_skill_ids TEXT)");// Thêm cột để lưu ID các skill buff của quái vật
+                "atk_skill_ids TEXT," +
+                "def_skill_ids TEXT," +
+                "buff_skill_ids TEXT)");
 
         // Tạo bảng AtkSkills (Skill Tấn công)
         db.execSQL("CREATE TABLE AtkSkills (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," + // Không AUTOINCREMENT để có thể đặt ID cố định
+                "id INTEGER PRIMARY KEY," +
                 "name TEXT," +
                 "imageSkill TEXT," +
                 "type TEXT," +
@@ -54,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Tạo bảng DefSkills (Skill Phòng thủ)
         db.execSQL("CREATE TABLE DefSkills (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," + // Không AUTOINCREMENT
+                "id INTEGER PRIMARY KEY," +
                 "name TEXT," +
                 "imageSkill TEXT," +
                 "type TEXT," +
@@ -64,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Tạo bảng BuffSkills (Skill Buff)
         db.execSQL("CREATE TABLE BuffSkills (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," + // Không AUTOINCREMENT
+                "id INTEGER PRIMARY KEY," +
                 "name TEXT," +
                 "imageSkill TEXT," +
                 "type TEXT," +
@@ -72,20 +71,25 @@ public class DBHelper extends SQLiteOpenHelper {
                 "mana INTEGER," +
                 "effect TEXT)");
 
+        // Bảng Items
+        db.execSQL("CREATE TABLE Items (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT," +
+                "imageResId TEXT," +
+                "type TEXT," + // Ví dụ: "skill_book", "exp_item"
+                "value INTEGER," + // Giá trị hồi phục/tăng thêm/kinh nghiệm/ID skill
+                "price INTEGER," +
+                "description TEXT)");
 
-
+        // Dữ liệu ban đầu cho Monsters
         db.execSQL("INSERT INTO Monsters (id, name, imageResId, hp, mana, attack, defense, atk_skill_ids, def_skill_ids, buff_skill_ids) " +
-                "VALUES (1, 'Slime', 'slime', 80, 30, 10, 8, '2', '', '1')"); // Slime
+                "VALUES (1, 'Slime', 'slime', 80, 30, 10, 8, '2', '', '1')");
         db.execSQL("INSERT INTO Monsters (id, name, imageResId, hp, mana, attack, defense, atk_skill_ids, def_skill_ids, buff_skill_ids) " +
-                "VALUES (2, 'Goblin', 'goblin', 100, 40, 15, 5, '1,3', '', '')"); // Goblin
+                "VALUES (2, 'Goblin', 'goblin', 100, 40, 15, 5, '1,3', '', '')");
         db.execSQL("INSERT INTO Monsters (id, name, imageResId, hp, mana, attack, defense, atk_skill_ids, def_skill_ids, buff_skill_ids) " +
-                "VALUES (3, 'Dragon', 'dragon', 120, 50, 20, 15, '', '1', '')"); // Dragon
+                "VALUES (3, 'Dragon', 'dragon', 120, 50, 20, 15, '', '1', '')");
 
-
-
-
-        // Dữ liệu thẻ AtkSkills
-        // Quan trọng: ID cần được định rõ nếu không AUTOINCREMENT. imageSkill là tên file ảnh không đuôi.
+        // Dữ liệu ban đầu cho AtkSkills
         db.execSQL("INSERT INTO AtkSkills (id, name, imageSkill, type, baseAtk, mana, effect) " +
                 "VALUES (1, 'Cắn', 'can', 'damage', 100, 5, 'none')");
         db.execSQL("INSERT INTO AtkSkills (id, name, imageSkill, type, baseAtk, mana, effect) " +
@@ -93,19 +97,29 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO AtkSkills (id, name, imageSkill, type, baseAtk, mana, effect) " +
                 "VALUES (3, 'Chí Mạng', 'chem', 'damage', 75, 15, 'crit')");
 
-
-        // Dữ liệu thẻ DefSkills
+        // Dữ liệu ban đầu cho DefSkills
         db.execSQL("INSERT INTO DefSkills (id, name, imageSkill, type, baseDef, mana, effect) " +
                 "VALUES (1, 'Phòng Thủ', 'shield', 'defense', 10, 5, 'none')");
-//        db.execSQL("INSERT INTO DefSkills (id, name, imageSkill, type, baseDef, mana, effect) " +
-//                "VALUES (2, 'Tăng Giáp', 'shieldboost', 'buff', 0, 10, 'buff_defense')");
 
-
-        // Dữ liệu thẻ BuffSkills
+        // Dữ liệu ban đầu cho BuffSkills
         db.execSQL("INSERT INTO BuffSkills (id, name, imageSkill, type, 'increase', mana, effect) " +
                 "VALUES (1, 'Hồi Máu', 'heal', 'buff', 20, 7, 'heal')");
         db.execSQL("INSERT INTO BuffSkills (id, name, imageSkill, type, 'increase', mana, effect) " +
                 "VALUES (2, 'Tăng Sức Mạnh', 'power_up', 'buff', 15, 10, 'buff_attack')");
+
+        // --- Dữ liệu ban đầu cho Items (chỉ sách và đồ ăn tăng EXP) ---
+        db.execSQL("INSERT INTO Items (id, name, imageResId, type, value, price, description) " +
+                "VALUES (1, 'Sách Kinh Nghiệm Nhỏ', 'exp_book_small', 'exp_book_small', 50, 100, 'Tăng 50 điểm kinh nghiệm.')");
+        db.execSQL("INSERT INTO Items (id, name, imageResId, type, value, price, description) " +
+                "VALUES (2, 'Sách Kinh Nghiệm Lớn', 'exp_book_large', 'exp_book_large', 200, 350, 'Tăng 200 điểm kinh nghiệm.')");
+        db.execSQL("INSERT INTO Items (id ,name, imageResId, type, value, price, description) " +
+                "VALUES ( 3,'Sách Kĩ Năng Tấn Công I', 'atk_skill_book_1', 'atk_skill_book_1', 1, 200, 'Dạy kĩ năng Cắn.')"); // Value là ID của AtkSkill
+        db.execSQL("INSERT INTO Items (id, name, imageResId, type, value, price, description) " +
+                "VALUES (4, 'Sách Kĩ Năng Phòng Thủ I', 'def_skill_book_1', 'def_skill_book_1', 1, 180, 'Dạy kĩ năng Phòng Thủ.')"); // Value là ID của DefSkill
+        db.execSQL("INSERT INTO Items (id, name, imageResId, type, value, price, description) " +
+                "VALUES (5, 'Bánh Ngọt EXP', 'exp_cake', 'exp_cake', 30, 60, 'Món bánh ngọt giúp tăng 30 EXP.')");
+        db.execSQL("INSERT INTO Items (id, name, imageResId, type, value, price, description) " +
+                "VALUES (6, 'Thịt Nướng EXP', 'exp_meat', 'exp_meat', 70, 150, 'Món thịt nướng thơm ngon giúp tăng 70 EXP.')");
     }
 
     @Override
@@ -114,10 +128,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS AtkSkills");
         db.execSQL("DROP TABLE IF EXISTS DefSkills");
         db.execSQL("DROP TABLE IF EXISTS BuffSkills");
+        db.execSQL("DROP TABLE IF EXISTS Items");
         onCreate(db);
     }
 
-    // Hàm để lấy đường dẫn ảnh của quái vật theo ID
     public String getImagePathById(int monsterId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String imagePath = null;
@@ -126,19 +140,16 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery("SELECT imageResId FROM Monsters WHERE id = ?", new String[]{String.valueOf(monsterId)});
             if (cursor != null && cursor.moveToFirst()) {
                 imagePath = cursor.getString(cursor.getColumnIndexOrThrow("imageResId"));
-            } else {
-                // Log.e("DBHelper", "Không tìm thấy imageResId cho monster_id: " + monsterId); // Bỏ log
             }
         } catch (Exception e) {
-            // Log.e("DBHelper", "Lỗi khi lấy imagePathById: " + e.getMessage(), e); // Bỏ log
+            Log.e("DBHelper", "Error getting imagePathById: " + e.getMessage(), e);
         } finally {
             if (cursor != null) cursor.close();
-            db.close(); // Đóng DB ở đây vì đây là hàm lấy thông tin đơn lẻ
+            db.close();
         }
         return imagePath;
     }
 
-    // Hàm để lấy một danh sách N quái vật đầu tiên
     public List<Monster> getFirstNMonsters(int limit) {
         List<Monster> monsters = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -156,50 +167,40 @@ public class DBHelper extends SQLiteOpenHelper {
                     int defense = cursor.getInt(cursor.getColumnIndexOrThrow("defense"));
 
                     Monster monster = new Monster(id, name, imageResId, hp, mana, attack, defense);
-                    // Lấy và thêm skill cho Monster này
-                    // Quan trọng: KHÔNG ĐÓNG DB KẾT NỐI TRONG getMonsterSkills, NÓ SẼ ĐƯỢC ĐÓNG BỞI HÀM NÀY.
-                    monster.getSkills().addAll(getMonsterSkillsInternal(id, db)); // Gọi hàm nội bộ, truyền db đã mở
+                    monster.getSkills().addAll(getMonsterSkillsInternal(id, db));
                     monsters.add(monster);
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            // Log.e("DBHelper", "Lỗi khi lấy FirstNMonsters: " + e.getMessage(), e); // Bỏ log
+            Log.e("DBHelper", "Error getting FirstNMonsters: " + e.getMessage(), e);
         } finally {
             if (cursor != null) cursor.close();
-            db.close(); // Đóng DB ở đây sau khi hoàn tất các thao tác với cursor
+            db.close();
         }
         return monsters;
     }
 
-    // Hàm để thêm Monster
     public void addMonster(Monster monster) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("id", monster.id); // Thêm ID vào nếu không AUTOINCREMENT
+        values.put("id", monster.id);
         values.put("name", monster.name);
         values.put("imageResId", monster.imageResId);
         values.put("hp", monster.hp);
         values.put("mana", monster.mana);
         values.put("attack", monster.attack);
         values.put("defense", monster.defense);
-        // values.put("atk_skill_ids", "1,2,3"); // Anh có thể lưu ID skill ở đây khi thêm monster
         db.insert("Monsters", null, values);
         db.close();
     }
 
-
-    // --- HÀM LẤY DANH SÁCH SKILL CỦA MỘT QUÁI VẬT TỪ DB ---
-    // Hàm này sẽ được gọi từ bên ngoài (ví dụ MainChienDau1) hoặc từ các hàm nội bộ của DBHelper.
-    // Đảm bảo nó sẽ mở và đóng DB.
     public List<SkillCard> getMonsterSkills(int monsterId) {
-        SQLiteDatabase db = this.getReadableDatabase(); // Mở kết nối DB
-        List<SkillCard> skills = getMonsterSkillsInternal(monsterId, db); // Gọi hàm nội bộ
-        db.close(); // Đóng kết nối DB sau khi hoàn tất
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<SkillCard> skills = getMonsterSkillsInternal(monsterId, db);
+        db.close();
         return skills;
     }
 
-    // Hàm nội bộ để lấy danh sách skill của một quái vật, nhận một kết nối DB đã mở.
-    // Dùng cho các hàm khác trong DBHelper cần truy vấn nhiều lần mà không muốn mở/đóng DB liên tục.
     private List<SkillCard> getMonsterSkillsInternal(int monsterId, SQLiteDatabase db) {
         List<SkillCard> skills = new ArrayList<>();
         Cursor cursor = null;
@@ -221,7 +222,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 skills.addAll(getBuffSkillsByIds(buffSkillIds, db));
             }
         } catch (Exception e) {
-            Log.e("DBHelper", "Lỗi khi lấy skill của Monster " + monsterId + ": " + e.getMessage(), e); // Giữ log này để debug skill
+            Log.e("DBHelper", "Error getting Monster skills " + monsterId + ": " + e.getMessage(), e);
         } finally {
             if (cursor != null) cursor.close();
         }
@@ -236,7 +237,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 try {
                     ids.add(Integer.parseInt(id.trim()));
                 } catch (NumberFormatException e) {
-                    // Log.e("DBHelper", "Lỗi parse ID skill: " + id, e); // Bỏ log
+                    Log.e("DBHelper", "Error parsing skill ID: " + id, e);
                 }
             }
         }
@@ -265,7 +266,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.e("DBHelper", "Lỗi khi lấy AtkSkills: " + e.getMessage(), e); // Giữ log này để debug skill
+            Log.e("DBHelper", "Error getting AtkSkills: " + e.getMessage(), e);
         } finally {
             if (cursor != null) cursor.close();
         }
@@ -294,7 +295,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.e("DBHelper", "Lỗi khi lấy DefSkills: " + e.getMessage(), e); // Giữ log này để debug skill
+            Log.e("DBHelper", "Error getting DefSkills: " + e.getMessage(), e);
         } finally {
             if (cursor != null) cursor.close();
         }
@@ -323,7 +324,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.e("DBHelper", "Lỗi khi lấy BuffSkills: " + e.getMessage(), e); // Giữ log này để debug skill
+            Log.e("DBHelper", "Error getting BuffSkills: " + e.getMessage(), e);
         } finally {
             if (cursor != null) cursor.close();
         }
@@ -334,4 +335,95 @@ public class DBHelper extends SQLiteOpenHelper {
         Context context = this.context;
         return context.getResources().getIdentifier(resourceName, resourceType, context.getPackageName());
     }
+
+    // --- Các hàm cho Items ---
+
+    public static class Item {
+        public int id;
+        public String name;
+        public String imageResId;
+        public String type;
+        public int value;
+        public int price;
+        public String description;
+
+        public Item(int id, String name, String imageResId, String type, int value, int price, String description) {
+            this.id = id;
+            this.name = name;
+            this.imageResId = imageResId;
+            this.type = type;
+            this.value = value;
+            this.price = price;
+            this.description = description;
+        }
+    }
+
+    public void addItem(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", item.name);
+        values.put("imageResId", item.imageResId);
+        values.put("type", item.type);
+        values.put("value", item.value);
+        values.put("price", item.price);
+        values.put("description", item.description);
+        db.insert("Items", null, values);
+        db.close();
+    }
+
+    public List<Item> getAllItems() {
+        List<Item> items = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM Items", null);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                    String imageResId = cursor.getString(cursor.getColumnIndexOrThrow("imageResId"));
+                    String type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
+                    int value = cursor.getInt(cursor.getColumnIndexOrThrow("value"));
+                    int price = cursor.getInt(cursor.getColumnIndexOrThrow("price"));
+                    String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+
+                    items.add(new Item(id, name, imageResId, type, value, price, description));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("DBHelper", "Error getting all items: " + e.getMessage(), e);
+        } finally {
+            if (cursor != null) cursor.close();
+            db.close();
+        }
+        return items;
+    }
+
+    public Item getItemById(int itemId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Item item = null;
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM Items WHERE id = ?", new String[]{String.valueOf(itemId)});
+            if (cursor != null && cursor.moveToFirst()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                String imageResId = cursor.getString(cursor.getColumnIndexOrThrow("imageResId"));
+                String type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
+                int value = cursor.getInt(cursor.getColumnIndexOrThrow("value"));
+                int price = cursor.getInt(cursor.getColumnIndexOrThrow("price"));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+
+                item = new Item(id, name, imageResId, type, value, price, description);
+            }
+        } catch (Exception e) {
+            Log.e("DBHelper", "Error getting item by ID: " + e.getMessage(), e);
+        } finally {
+            if (cursor != null) cursor.close();
+            db.close();
+        }
+        return item;
+    }
+
+
 }

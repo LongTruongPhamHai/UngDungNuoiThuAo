@@ -28,12 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GameActivity extends AppCompatActivity {
+
     private ImageView imageView;
     private TextView txtMyLv;
     private TextView txtMyTen; // Khai báo TextView cho tên (sẽ là tên pet)
     //    private final int[] imageArrayTam = {R.drawable.tam1, R.drawable.tam2, R.drawable.tam3,
 //            R.drawable.tam4};
-    private ImageButton backBtn;
     private final int[] imageArrayAn = {R.drawable.an1, R.drawable.an2,
             R.drawable.an3, R.drawable.an4};
 
@@ -64,25 +64,11 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game);
 
         db = FirebaseFirestore.getInstance();
+
         receivedUserId = getIntent().getStringExtra("userId");
-
-
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//            )};
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         if (receivedUserId == null || receivedUserId.isEmpty()) {
             Log.e("GameActivity", "Error: userId not received from HomeActivity!");
             Toast.makeText(this, "Lỗi: Không tìm thấy ID người dùng. Quay lại màn hình chính.", Toast.LENGTH_LONG).show();
@@ -93,20 +79,12 @@ public class GameActivity extends AppCompatActivity {
             loadPetName(receivedUserId); // Tải tên pet
         }
 
-        backBtn = findViewById(R.id.back_btn);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         txtMyLv = findViewById(R.id.txtMyLv);
         txtMyTen = findViewById(R.id.txtMyTen); // Ánh xạ TextView cho tên pet
         thanhEXP = findViewById(R.id.thanhEXP);
         thanhEXP.setMax(maxEXP);
 
-        ImageView imageViewBtnAn = findViewById(R.id.imageViewBtnAn);
+        ImageView imageViewBtnTuiDo = findViewById(R.id.imageViewBtnTuiDo);
         ImageView imageViewBtnShop = findViewById(R.id.imageViewBtnShop);
         ImageView imageViewBtnChienDau = findViewById(R.id.imageViewBtnChienDau);
         ImageView imageViewBtnChiSo = findViewById(R.id.imageViewBtnChiSo);
@@ -115,99 +93,76 @@ public class GameActivity extends AppCompatActivity {
         ImageView imageView2 = findViewById(R.id.imageView2);
 
         FrameLayout btnShop = findViewById(R.id.btnShop);
-        FrameLayout btnAn = findViewById(R.id.btnAn);
+        FrameLayout btnTuiDo = findViewById(R.id.btnTuiDo);
         FrameLayout btnChienDau = findViewById(R.id.btnChienDau);
         FrameLayout btnChiSo = findViewById(R.id.btnChiSo);
 
-        TextView btnAnText = findViewById((R.id.btnAnText));
+        TextView btnTuiDoText = findViewById((R.id.btnTuiDoText));
         TextView btnShopText = findViewById((R.id.btnShopText));
         TextView btnChienDauText = findViewById((R.id.btnChienDauText));
         TextView btnChiSoText = findViewById((R.id.btnChiSoText));
 
 
-        imageView.setImageResource(R.drawable.basic);
         startAnimation(imageView2, imageArrayBG, 200, handler2);
 
-        btnShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isActive) {
-                    isDaAnNut = false;
-                    GameActivity.this.startAnimationButton(imageViewBtnShop, imageArrayButton, 50, handler2, btnShopText);
-                    isActive = true;
+        btnShop.setOnClickListener(v -> {
+            if (!isActive) {
+                isDaAnNut = false;
+                startAnimationButton(imageViewBtnShop, imageArrayButton, 50, handler2, btnShopText);
 
-//                Intent intent = new Intent(v.getContext(), ShopActivity.class);
-//                String userId = getIntent().getStringExtra("userId");
-//                intent.putExtra("userId", userId);
-//                startActivity(intent);
-                }
+
+                Intent intent = new Intent(v.getContext(), ShopActivity.class);
+                String userId = getIntent().getStringExtra("userId");
+                intent.putExtra("userId", userId);
+                startActivity(intent);
             }
         });
 
-        btnAn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isActive) {
-                    isDaAnNut = false;
-                    GameActivity.this.startAnimationButton(imageViewBtnAn, imageArrayButton, 50, handler2, btnAnText);
-                    isActive = true;
-                    GameActivity.this.startAnimation(imageView, imageArrayAn, 500, handler1);
 
-                    handler1.postDelayed(() -> {
-                        GameActivity.this.stopAnimation(imageView, handler1, runnable1);
-                        currentEXP += 30;
-                        GameActivity.this.checkEXP();
-                    }, 2000);
+        btnTuiDo.setOnClickListener(v -> {
+            if (!isActive) {
+                isDaAnNut = false;
+                startAnimationButton(imageViewBtnTuiDo, imageArrayButton, 50, handler2, btnTuiDoText);
 
+
+                Intent intent = new Intent(v.getContext(), InventoryActivity.class);
+                String userId = getIntent().getStringExtra("userId");
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+        });
+
+        btnChienDau.setOnClickListener(v -> {
+            startAnimationButton(imageViewBtnChienDau, imageArrayButton, 100, handler2, btnChienDauText);
+
+            new Handler().postDelayed(() -> {
+                if (receivedUserId == null || receivedUserId.isEmpty()) {
+                    Toast.makeText(GameActivity.this, "Lỗi: Không có ID người dùng để chiến đấu!", Toast.LENGTH_SHORT).show();
+                    Log.e("GameActivity", "UserId is null or empty when trying to start MapActivity.");
                 } else {
-                    new AlertDialog.Builder(GameActivity.this)
-                            .setTitle("Thông báo")
-                            .setMessage("Đang bận làm việc khác, chờ chút điii?")
-                            .setPositiveButton("OK", (dialog, which) -> Toast.makeText(GameActivity.this.getApplicationContext(), "Đồng ý nhé", Toast.LENGTH_SHORT).show())
-                            .setNegativeButton("Hủy", null)
-                            .show();
+                    Intent myintent = new Intent(GameActivity.this, MapActivity.class);
+                    myintent.putExtra("userId", receivedUserId);
+                    Log.d("GameActivity", "Passing userId to MapActivity: " + receivedUserId);
+                    startActivity(myintent);
                 }
-            }
-        });
-
-        btnChienDau.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameActivity.this.startAnimationButton(imageViewBtnChienDau, imageArrayButton, 100, handler2, btnChienDauText);
-
-                new Handler().postDelayed(() -> {
-                    if (receivedUserId == null || receivedUserId.isEmpty()) {
-                        Toast.makeText(GameActivity.this, "Lỗi: Không có ID người dùng để chiến đấu!", Toast.LENGTH_SHORT).show();
-                        Log.e("GameActivity", "UserId is null or empty when trying to start MapActivity.");
-                    } else {
-                        Intent myintent = new Intent(GameActivity.this, MapActivity.class);
-                        myintent.putExtra("userId", receivedUserId);
-                        Log.d("GameActivity", "Passing userId to MapActivity: " + receivedUserId);
-                        startActivity(myintent);
-                    }
-                }, 100);
-                isDaAnNut = false;
-            }
+            }, 100);
+            isDaAnNut = false;
         });
 
 
-        btnChiSo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameActivity.this.startAnimationButton(imageViewBtnChiSo, imageArrayButton, 100, handler2, btnChiSoText);
-                new Handler().postDelayed(() -> {
-                    Intent myintent = new Intent(GameActivity.this, StatActivity.class);
-                    myintent.putExtra("userId", receivedUserId); // << Truyền userId sang StatActivity
-                    Log.d("GameActivity", "Passing userId to StatActivity: " + receivedUserId); // Log
-                    GameActivity.this.startActivity(myintent);
-                }, 100);
-                isDaAnNut = false;
-            }
+        btnChiSo.setOnClickListener(v -> {
+            startAnimationButton(imageViewBtnChiSo, imageArrayButton, 100, handler2, btnChiSoText);
+            new Handler().postDelayed(() -> {
+                Intent myintent = new Intent(GameActivity.this, StatActivity.class);
+                myintent.putExtra("userId", receivedUserId); // << Truyền userId sang MainChiSo
+                Log.d("GameActivity", "Passing userId to MainChiSo: " + receivedUserId); // Log
+                startActivity(myintent);
+            }, 100);
+            isDaAnNut = false;
         });
     }
 
-    private void startAnimation(final ImageView targetView, final int[] imageArray,
-                                final long delayMs, final Handler handler) {
+    private void startAnimation(final ImageView targetView, final int[] imageArray, final long delayMs, final Handler handler) {
         runnable1 = new Runnable() {
             int currentIndex = 0;
 
@@ -221,8 +176,7 @@ public class GameActivity extends AppCompatActivity {
         handler.post(runnable1);
     }
 
-    private void startAnimationButton(final ImageView targetView, final int[] imageArray,
-                                      final long delayMs, final Handler handler, final TextView textView) {
+    private void startAnimationButton(final ImageView targetView, final int[] imageArray, final long delayMs, final Handler handler, final TextView textView) {
         runnable2 = new Runnable() {
             int currentIndex = 0;
 
