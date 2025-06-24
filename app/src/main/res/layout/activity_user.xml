@@ -131,17 +131,6 @@
 
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/coin_tv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="Xu:"
-                            android:textAlignment="center"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
                         <Button
                             android:id="@+id/edit_email_btn"
                             android:layout_width="match_parent"

@@ -69,7 +69,6 @@ public class HomeActivity extends AppCompatActivity {
 
         usernameTv = findViewById(R.id.username_tv);
         levelTv = findViewById(R.id.level_tv);
-        coinTv = findViewById(R.id.coin_tv);
         petnameTv = findViewById(R.id.petname_tv);
         statusTv = findViewById(R.id.status_tv);
 
@@ -272,7 +271,6 @@ public class HomeActivity extends AppCompatActivity {
                 usernameTv.setText(nUser.getUsername());
                 levelTv.setText("Cấp độ: " + String.valueOf(nUser.getLevel()));
                 levelBar.setProgress(nUser.getExp());
-                coinTv.setText("Xu: " + String.valueOf(nUser.getCoin()));
                 loadingLl.setVisibility(View.GONE);
             }
 

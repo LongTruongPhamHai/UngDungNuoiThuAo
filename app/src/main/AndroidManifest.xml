@@ -28,6 +28,12 @@
         android:theme="@style/Theme.UngDungNuoiThuAo"
         tools:targetApi="31">
         <activity
+            android:name=".InventoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ShopActivity"
+            android:exported="false" />
+        <activity
             android:name=".StatActivity"
             android:exported="false" />
         <activity

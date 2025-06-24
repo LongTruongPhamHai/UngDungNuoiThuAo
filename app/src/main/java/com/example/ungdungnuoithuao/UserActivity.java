@@ -30,7 +30,7 @@ import repository.callback.user.UserLoadedCallback;
 public class UserActivity extends AppCompatActivity {
 
     private String userId;
-    private TextView emailTv, usernameTv, levelTv, levelBarTv, coinTv;
+    private TextView emailTv, usernameTv, levelTv, levelBarTv;
     private EditText usernameEt;
     private ProgressBar levelBar;
     private LinearLayout loadingLl;
@@ -60,7 +60,6 @@ public class UserActivity extends AppCompatActivity {
         usernameTv = findViewById(R.id.username_tv);
         levelTv = findViewById(R.id.level_tv);
         levelBarTv = findViewById(R.id.level_bar_tv);
-        coinTv = findViewById(R.id.coin_tv);
 
         levelBar = findViewById(R.id.level_bar);
 
@@ -486,7 +485,6 @@ public class UserActivity extends AppCompatActivity {
                 levelTv.setText("Cấp độ: " + String.valueOf(nUser.getLevel()));
                 levelBar.setProgress(nUser.getExp());
                 levelBarTv.setText(String.valueOf(nUser.getExp()));
-                coinTv.setText("Xu: " + String.valueOf(nUser.getCoin()));
                 loadingLl.setVisibility(View.GONE);
             }
 
